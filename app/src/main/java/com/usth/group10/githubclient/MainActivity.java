@@ -7,6 +7,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                             mMainToolbar.setTitle(menuItem.getTitle());
                             break;
                         case R.id.item_drawer_trending:
-                            newFragment = new Fragment();
+                            newFragment = new TrendingFragment();
                             mMainToolbar.setTitle(menuItem.getTitle());
                             break;
                         default:

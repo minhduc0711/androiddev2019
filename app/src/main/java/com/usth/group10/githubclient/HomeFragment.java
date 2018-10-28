@@ -46,7 +46,7 @@ public class HomeFragment extends Fragment {
                         newFragment = new ListFragment();
                         break;
                     case R.id.item_bottom_nav_issues:
-                        newFragment = EmptyFragment.newInstance(getResources().getString(R.string.bottom_nav_issues));
+                        newFragment = new IssuesFragment();
                         break;
                     case R.id.item_bottom_nav_pull_requests:
                         newFragment = EmptyFragment.newInstance(getResources().getString(R.string.bottom_nav_pull_requests));
