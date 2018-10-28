@@ -35,7 +35,7 @@ public class ProfileFragment extends Fragment {
         // set Adapter
         PagerAdapter adapter = new HomeFragmentPagerAdapter(getChildFragmentManager());
         mViewPager = view.findViewById(R.id.view_pager);
-        mViewPager.setOffscreenPageLimit(7);
+        mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(adapter);
 
 

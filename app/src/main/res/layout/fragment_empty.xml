@@ -12,8 +12,7 @@
         android:layout_above="@id/text_view_shrug"
         android:layout_margin="10dp"
         android:textSize="30sp"
-        android:textColor="@color/primaryColor"
-        />
+        android:textColor="@color/primaryColor" />
 
     <TextView
         android:id="@+id/text_view_shrug"
@@ -32,7 +31,6 @@
         android:layout_below="@+id/text_view_shrug"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:text="@string/button_reload"
-        />
+        android:text="@string/button_reload" />
 
 </RelativeLayout>

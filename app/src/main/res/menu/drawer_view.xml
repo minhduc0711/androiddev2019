@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/drawer_item_home"
+            android:id="@+id/item_drawer_home"
             android:title="@string/drawer_home"
             android:icon="@drawable/ic_menu_home"/>
         <item
-            android:id="@+id/drawer_item_profile"
+            android:id="@+id/item_drawer_profile"
             android:title="@string/drawer_profile"
             android:icon="@drawable/ic_menu_profile"/>
         <item
-            android:id="@+id/drawer_item_trending"
+            android:id="@+id/item_drawer_trending"
             android:title="@string/drawer_trending"
             android:icon="@drawable/ic_menu_trending"/>
         <item
-            android:id="@+id/drawer_item_logout"
+            android:id="@+id/item_drawer_logout"
             android:title="@string/drawer_logout"
             android:icon="@drawable/ic_menu_logout"/>
     </group>
