@@ -7,10 +7,20 @@ Students are expected to:
 * Update student name and ID to this README file
 * Push your commits regularly, with proper commit messages
 
-Student Info
+Group Info
 =======================
 
-* Name: *YourNameHere*
-* ID: *YourIdHere*
-* Group ID: *Your Group ID here*
-* Project Name: *Your Project Name here*
+* Project name: GitHub Client
+* Group **10**
+* Members:
+    * Phạm Minh Đức USTHBI7-040
+    * Nguyễn Đức Khải USTHBI7-085
+    * Bùi Quốc Trung USTHBI7-153
+    * Trần Thị Thúy Kiều USTHBI7-088
+
+Notes
+=======================
+* [Code styles](../master/project_and_code_guidelines.md)
+* The app was migrated to AndroidX in order to make use of Material Design styling.
+
+  To migrate: **Refactor > Migrate to AndroidX**
