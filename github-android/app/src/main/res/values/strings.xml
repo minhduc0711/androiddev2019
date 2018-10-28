@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Github Lite</string>
+    <string name="title_activity_home">HomeActivity</string>
+
+    <string name="drawer_home">Home</string>
+    <string name="drawer_profile">Profile</string>
+    <string name="drawer_trending">Trending</string>
+    <string name="drawer_logout">Logout</string>
+
+    <string name="bottom_nav_feeds">Feeds</string>
+    <string name="bottom_nav_issues">Issues</string>
+    <string name="bottom_nav_pull_requests">Pull Requests</string>
+
+    <string name="button_profile_followers">Followers</string>
+    <string name="button_profile_following">Following</string>
+    <string name="button_reload">reload</string>
+    <string name="shrug">¯\\_(ツ)_/¯</string>
+
+    <string name="description_profile_pic">Your profile picture</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

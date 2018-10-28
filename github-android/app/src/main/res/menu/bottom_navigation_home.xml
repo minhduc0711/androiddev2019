@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+         android:id="@+id/item_bottom_nav_feeds"
+         android:title="@string/bottom_nav_feeds"
+         android:icon="@drawable/ic_menu_github"
+         android:iconTint="@color/grey_icon"/>
+
+    <item
+        android:id="@+id/item_bottom_nav_issues"
+        android:title="@string/bottom_nav_issues"
+        android:icon="@drawable/ic_menu_issues" />
+
+    <item
+        android:id="@+id/item_bottom_nav_pull_requests"
+        android:title="@string/bottom_nav_pull_requests"
+        android:icon="@drawable/ic_menu_pull_requests"
+        android:iconTint="@color/grey_icon" />
+
+</menu>
