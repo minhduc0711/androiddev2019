@@ -2,13 +2,15 @@ package com.usth.group10.githubclient;
 
 import androidx.annotation.NonNull;
 import com.google.android.material.navigation.NavigationView;
+import com.usth.group10.githubclient.Home.HomeFragment;
+import com.usth.group10.githubclient.Profile.ProfileFragment;
+
 import androidx.fragment.app.Fragment;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
@@ -94,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         if (mNavigationView.getCheckedItem().getItemId() != R.id.item_drawer_home) {
             mNavigationView.setCheckedItem(R.id.item_drawer_home);
             mCurrentSelectedItemResId = R.id.item_drawer_home;
+            mMainToolbar.setTitle(R.string.app_name);
             getSupportFragmentManager().beginTransaction().replace(R.id.layout_main, new HomeFragment()).commit();
         } else {
             finish();

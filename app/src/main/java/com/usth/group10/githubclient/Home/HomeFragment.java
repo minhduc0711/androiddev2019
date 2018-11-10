@@ -1,4 +1,4 @@
-package com.usth.group10.githubclient;
+package com.usth.group10.githubclient.Home;
 
 
 import android.os.Bundle;
@@ -13,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.usth.group10.githubclient.ListFragment;
+import com.usth.group10.githubclient.NothingHereFragment;
+import com.usth.group10.githubclient.R;
 
 
 /**
@@ -49,7 +52,7 @@ public class HomeFragment extends Fragment {
                         newFragment = new IssuesFragment();
                         break;
                     case R.id.item_bottom_nav_pull_requests:
-                        newFragment = EmptyFragment.newInstance(getResources().getString(R.string.bottom_nav_pull_requests));
+                        newFragment = NothingHereFragment.newInstance(getResources().getString(R.string.bottom_nav_pull_requests));
                         break;
                     default:
                         newFragment = new Fragment();

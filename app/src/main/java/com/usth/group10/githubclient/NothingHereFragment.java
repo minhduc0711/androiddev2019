@@ -12,21 +12,21 @@ import android.widget.TextView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EmptyFragment extends Fragment {
+public class NothingHereFragment extends Fragment {
     private static final String KEY_ITEM_NAME = "itemName";
 
     private TextView mTextViewMsgEmpty;
 
-    public static EmptyFragment newInstance(String itemName) {
+    public static NothingHereFragment newInstance(String itemName) {
         
         Bundle args = new Bundle();
         args.putString(KEY_ITEM_NAME, itemName.toLowerCase());
-        EmptyFragment fragment = new EmptyFragment();
+        NothingHereFragment fragment = new NothingHereFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
-    public EmptyFragment() {
+    public NothingHereFragment() {
         // Required empty public constructor
     }
 
@@ -35,7 +35,7 @@ public class EmptyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_empty, container, false);
+        View view = inflater.inflate(R.layout.fragment_nothing_here, container, false);
 
         String msg = "No" + " " + getArguments().getString(KEY_ITEM_NAME);
         mTextViewMsgEmpty = view.findViewById(R.id.text_no_items);

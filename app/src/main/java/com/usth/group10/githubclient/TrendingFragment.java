@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.usth.group10.githubclient.Repository.RepoActivity;
+
 
 /**
  * A simple {@link Fragment} subclass.

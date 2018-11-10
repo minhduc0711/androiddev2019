@@ -1,4 +1,4 @@
-package com.usth.group10.githubclient;
+package com.usth.group10.githubclient.Profile;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -7,15 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.usth.group10.githubclient.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OverviewProfileFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link OverviewProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
+
 public class OverviewProfileFragment extends Fragment {
     private ProfileFragment mParentFragment;
     private Button mFollowersButton;

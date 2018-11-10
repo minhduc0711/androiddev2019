@@ -1,4 +1,4 @@
-package com.usth.group10.githubclient;
+package com.usth.group10.githubclient.Repository;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
+import com.usth.group10.githubclient.R;
 
 public class RepoActivity extends AppCompatActivity {
     private ViewPager mViewPager;
@@ -49,7 +50,7 @@ public class RepoActivity extends AppCompatActivity {
 
     private static class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
         private final int PAGE_COUNT = 5;
-        private String titles[] = new String[] {"Readme", "Files", "Commits", "Release", "Contributions" };
+        private String titles[] = new String[] {"Readme", "Files", "Commits", "Release", "Contributions"};
         private HomeFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -62,11 +63,11 @@ public class RepoActivity extends AppCompatActivity {
         public Fragment getItem(int page) {
             // returns an instance of Fragment corresponding to the specified page
             switch (page) {
-                case 0: return new Readme();
-                case 1: return new Files();
-                case 2: return new Commits();
-                case 3: return new Release();
-                case 4: return new Contributions();
+                case 0: return new ReadmeFragment();
+                case 1: return new FilesFragment();
+                case 2: return new CommitsFragment();
+                case 3: return new ReleaseFragment();
+                case 4: return new ContributionsFragment();
                 default: return new Fragment();
             }
         }
