@@ -1,80 +1,100 @@
 package com.usth.group10.githubclient.repository;
 
-import androidx.appcompat.app.ActionBar;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.PopupMenu;
+
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 
-import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.usth.group10.githubclient.R;
 
+
 public class RepoActivity extends AppCompatActivity {
-    private ViewPager mViewPager;
-    private TabLayout mTabLayout;
-    private Toolbar mToolbar;
+
+    private static final String TAG = "RepoActivity";
+
+    private ImageButton popupButton;
+    private ImageButton backButton;
+    private BottomNavigationView mBottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repo);
 
-        mToolbar = findViewById(R.id.toolbar_repo);
-        setSupportActionBar(mToolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_back);
-
-        // set Adapter
-        PagerAdapter adapter = new HomeFragmentPagerAdapter(getSupportFragmentManager());
-        mViewPager = findViewById(R.id.pager);
-        mViewPager.setOffscreenPageLimit(3);
-        mViewPager.setAdapter(adapter);
-
-        //set header for tab
-        mTabLayout = findViewById(R.id.tablayout);
-        mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
-    private static class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
-        private final int PAGE_COUNT = 5;
-        private String titles[] = new String[] {"Readme", "Files", "Commits", "Release", "Contributions"};
-        private HomeFragmentPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-        @Override
-        public int getCount() {
-            return PAGE_COUNT;
-        }
-        // number of pages for a ViewPager
-        @Override
-        public Fragment getItem(int page) {
-            // returns an instance of Fragment corresponding to the specified page
-            switch (page) {
-                case 0: return new ReadmeFragment();
-                case 1: return new FilesFragment();
-                case 2: return new CommitsFragment();
-                case 3: return new ReleaseFragment();
-                case 4: return new ContributionsFragment();
-                default: return new Fragment();
+        mBottomNavigationView = findViewById(R.id.bottom_nav_repo);
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new CodeFragment()).commit();
+        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                Fragment newFragment;
+                switch (menuItem.getItemId()) {
+                    case R.id.item_bottom_nav_repo_code:
+                        Log.d(TAG, "Fragment for feeds created");
+                        newFragment = new CodeFragment();
+                        break;
+                    case R.id.item_bottom_nav_repo_issues:
+                        newFragment = new IssuesRepoFragment();
+                        break;
+                    case R.id.item_bottom_nav_repo_pull_requests:
+                        newFragment = new PullRequestsFragment();
+                        break;
+                    case R.id.item_bottom_nav_repo_projects:
+                        newFragment = new ProjectsFragment();
+                        break;
+                    default:
+                        newFragment = new Fragment();
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, newFragment).commit();
+                return true;
             }
-        }
-        @Override
-        public CharSequence getPageTitle(int page) {
-            // returns a tab title corresponding to the specified page
-            return titles[page];
-        }
+        });
+        mBottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
+            @Override
+            public void onNavigationItemReselected(@NonNull MenuItem menuItem) {
+                // Do nothing
+            }
+        });
+
+//      Back Button
+        backButton = findViewById(R.id.back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+//      Popop Menu
+        popupButton = findViewById(R.id.popup_menu);
+        popupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(RepoActivity.this, popupButton);
+                popupMenu.getMenuInflater()
+                        .inflate(R.menu.more_info_repo, popupMenu.getMenu());
+
+//                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem item) {
+//                        Toast.makeText(
+//                                RepoActivity.this,
+//                                item.getTitle(),
+//                                Toast.LENGTH_LONG
+//                        ).show();
+//                        return true;
+//                    }
+//                });
+                popupMenu.show();
+            }
+        });
+
     }
+
 }
