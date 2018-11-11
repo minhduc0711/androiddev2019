@@ -1,4 +1,4 @@
-package com.usth.group10.githubclient.Repository;
+package com.usth.group10.githubclient.repository;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;

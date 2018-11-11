@@ -1,5 +1,4 @@
-package com.usth.group10.githubclient;
-
+package com.usth.group10.githubclient.repository;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -7,23 +6,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.usth.group10.githubclient.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ListFragment extends Fragment {
-
-
-    public ListFragment() {
+public class CommitsFragment extends Fragment {
+    public CommitsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list, container, false);
+        return inflater.inflate(R.layout.fragment_commits, container, false);
     }
-
 }

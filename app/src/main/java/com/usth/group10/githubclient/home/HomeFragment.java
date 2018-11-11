@@ -1,4 +1,4 @@
-package com.usth.group10.githubclient.Home;
+package com.usth.group10.githubclient.home;
 
 
 import android.os.Bundle;
@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.usth.group10.githubclient.ListFragment;
 import com.usth.group10.githubclient.NothingHereFragment;
 import com.usth.group10.githubclient.R;
 
@@ -38,7 +37,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         mBottomNavigationView = view.findViewById(R.id.bottom_nav_home);
-        getChildFragmentManager().beginTransaction().add(R.id.layout_home, new ListFragment()).commit();
+        getChildFragmentManager().beginTransaction().add(R.id.layout_home, new FeedsFragment()).commit();
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -46,7 +45,7 @@ public class HomeFragment extends Fragment {
                 switch (menuItem.getItemId()) {
                     case R.id.item_bottom_nav_feeds:
                         Log.d(TAG, "Fragment for feeds created");
-                        newFragment = new ListFragment();
+                        newFragment = new FeedsFragment();
                         break;
                     case R.id.item_bottom_nav_issues:
                         newFragment = new IssuesFragment();

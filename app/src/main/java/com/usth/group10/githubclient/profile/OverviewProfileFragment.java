@@ -1,4 +1,4 @@
-package com.usth.group10.githubclient.Profile;
+package com.usth.group10.githubclient.profile;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;

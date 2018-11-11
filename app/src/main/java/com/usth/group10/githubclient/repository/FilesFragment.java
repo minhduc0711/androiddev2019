@@ -1,19 +1,19 @@
-package com.usth.group10.githubclient;
+package com.usth.group10.githubclient.repository;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.usth.group10.githubclient.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Files extends Fragment {
-    public Files() {
+public class FilesFragment extends Fragment {
+    public FilesFragment() {
         // Required empty public constructor
     }
 

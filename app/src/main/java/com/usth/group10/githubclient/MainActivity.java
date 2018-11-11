@@ -2,8 +2,8 @@ package com.usth.group10.githubclient;
 
 import androidx.annotation.NonNull;
 import com.google.android.material.navigation.NavigationView;
-import com.usth.group10.githubclient.Home.HomeFragment;
-import com.usth.group10.githubclient.Profile.ProfileFragment;
+import com.usth.group10.githubclient.home.HomeFragment;
+import com.usth.group10.githubclient.profile.ProfileFragment;
 
 import androidx.fragment.app.Fragment;
 import androidx.core.view.GravityCompat;
@@ -11,6 +11,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
@@ -24,6 +26,11 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar mMainToolbar;
     private NavigationView mNavigationView;
     private int mCurrentSelectedItemResId;
+
+    public static Intent newIntent(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

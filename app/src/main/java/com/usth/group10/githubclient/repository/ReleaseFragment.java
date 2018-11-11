@@ -1,7 +1,5 @@
-package com.usth.group10.githubclient.Repository;
+package com.usth.group10.githubclient.repository;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,8 +12,8 @@ import com.usth.group10.githubclient.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FilesFragment extends Fragment {
-    public FilesFragment() {
+public class ReleaseFragment extends Fragment {
+    public ReleaseFragment() {
         // Required empty public constructor
     }
 
@@ -23,6 +21,6 @@ public class FilesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_files, container, false);
+        return inflater.inflate(R.layout.fragment_release, container, false);
     }
 }
