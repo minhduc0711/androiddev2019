@@ -21,4 +21,5 @@
     <string name="login_username">Username</string>
     <string name="login_password">Password</string>
     <string name="button_login">Login with github</string>
+    <string name="welcome_login">Welcome to Github Lite</string>
 </resources>
