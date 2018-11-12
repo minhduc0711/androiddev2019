@@ -21,9 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
-    private String TAG = "LoginActivity";
-    private static final String PREF_ACCESS_TOKEN = "pref_access_token";
-    private static final String KEY_ACCESS_TOKEN = "access_token";
+    public static final String PREF_ACCESS_TOKEN = "pref_access_token";
+    public static final String KEY_ACCESS_TOKEN = "access_token";
 
     private static final String clientId = "ea654ab9b8b11cbb932d";
     private static final String clientSecret = "a44b767cda60c324b9c5aeff755bb8a1953b978d";

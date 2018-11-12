@@ -1,4 +1,4 @@
-package com.usth.group10.githubclient;
+package com.usth.group10.githubclient.others;
 
 
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.usth.group10.githubclient.R;
 
 
 /**

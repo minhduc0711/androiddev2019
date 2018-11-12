@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
-import com.usth.group10.githubclient.NothingHereFragment;
+import com.usth.group10.githubclient.others.NothingHereFragment;
 import com.usth.group10.githubclient.R;
 
 
