@@ -2,6 +2,7 @@ package com.usth.group10.githubclient;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -27,6 +28,10 @@ public class LoginActivity extends AppCompatActivity {
     private static final String redirectUri = "githublite://callback";
 
     private Button mLoginButton;
+
+    public static Intent newIntent(Context context) {
+        return new Intent(context, LoginActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

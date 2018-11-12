@@ -4,17 +4,21 @@
         <item
             android:id="@+id/item_drawer_home"
             android:title="@string/drawer_home"
+            android:checkable="false"
             android:icon="@drawable/ic_menu_home"/>
         <item
             android:id="@+id/item_drawer_profile"
             android:title="@string/drawer_profile"
+            android:checkable="false"
             android:icon="@drawable/ic_menu_profile"/>
         <item
             android:id="@+id/item_drawer_trending"
             android:title="@string/drawer_trending"
+            android:checkable="false"
             android:icon="@drawable/ic_menu_trending"/>
         <item
             android:id="@+id/item_drawer_logout"
+            android:checkable="false"
             android:title="@string/drawer_logout"
             android:icon="@drawable/ic_menu_logout"/>
     </group>

@@ -10,7 +10,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 import com.usth.group10.githubclient.home.HomeFragment;
 import com.usth.group10.githubclient.others.MySingleton;
-import com.usth.group10.githubclient.profile.ProfileFragment;
+import com.usth.group10.githubclient.profile.ProfileActivity;
 import com.usth.group10.githubclient.search.SearchableActivity;
 
 import androidx.fragment.app.Fragment;
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mUserNameTextView;
 
     private int mCurrentSelectedItemResId;
+    private String mAuthenticatedUserUrl;
 
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -69,46 +70,50 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_hamburger);
 
         mNavigationView = findViewById(R.id.nav_view_main);
-        mNavigationView.setCheckedItem(R.id.item_drawer_home);
-        mCurrentSelectedItemResId = R.id.item_drawer_home;
-        getSupportFragmentManager().beginTransaction().replace(R.id.layout_main, new HomeFragment()).commit();
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                menuItem.setChecked(true);
-                mDrawerLayout.closeDrawers();
-                // Swap fragments if switch to new item
-                if (menuItem.getItemId() != mCurrentSelectedItemResId) {
-                    mCurrentSelectedItemResId = menuItem.getItemId();
-                    Fragment newFragment;
-                    switch (menuItem.getItemId()) {
-                        case R.id.item_drawer_home:
-                            Log.d(TAG, "Home fragment created");
-                            newFragment = new HomeFragment();
-                            mMainToolbar.setTitle(R.string.app_name);
-                            break;
-                        case R.id.item_drawer_profile:
-                            newFragment = new ProfileFragment();
-                            mMainToolbar.setTitle(menuItem.getTitle());
-                            break;
-                        case R.id.item_drawer_trending:
-                            newFragment = new TrendingFragment();
-                            mMainToolbar.setTitle(menuItem.getTitle());
-                            break;
-                        default:
-                            newFragment = new Fragment();
-                    }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.layout_main, newFragment).commit();
-                }
-                return true;
-            }
-        });
 
         mNavHeader = mNavigationView.getHeaderView(0);
         mUserAvatarImageView = mNavHeader.findViewById(R.id.image_user_avatar_nav_header);
         mNameTextView = mNavHeader.findViewById(R.id.text_name_nav_header);
         mUserNameTextView = mNavHeader.findViewById(R.id.text_username_nav_header);
         updateNavHeader();
+
+        mNavigationView.setCheckedItem(R.id.item_drawer_home);
+        mCurrentSelectedItemResId = R.id.item_drawer_home;
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout_main, new HomeFragment()).commit();
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                mDrawerLayout.closeDrawers();
+                // Swap fragments if switch to new item
+                if (menuItem.getItemId() != mCurrentSelectedItemResId) {
+                    Intent intent;
+                    switch (menuItem.getItemId()) {
+                        case R.id.item_drawer_home:
+                            Log.d(TAG, "Home fragment created");
+                            mCurrentSelectedItemResId = menuItem.getItemId();
+                            getSupportFragmentManager().beginTransaction().replace(R.id.layout_main, new HomeFragment()).commit();
+                            mMainToolbar.setTitle(R.string.app_name);
+                            break;
+                        case R.id.item_drawer_profile:
+                            intent = ProfileActivity.newIntent(MainActivity.this, mAuthenticatedUserUrl);
+                            startActivity(intent);
+                            break;
+                        case R.id.item_drawer_trending:
+                            mCurrentSelectedItemResId = menuItem.getItemId();
+                            mMainToolbar.setTitle(menuItem.getTitle());
+                            getSupportFragmentManager().beginTransaction().replace(R.id.layout_main, new TrendingFragment()).commit();
+                            break;
+                        case R.id.item_drawer_logout:
+                            finish();
+                            intent = LoginActivity.newIntent(MainActivity.this);
+                            startActivity(intent);
+                        default:
+                            getSupportFragmentManager().beginTransaction().replace(R.id.layout_main, new Fragment()).commit();
+                    }
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -141,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            mAuthenticatedUserUrl = response.getString("url");
                             Picasso.get().load(response.getString("avatar_url")).into(mUserAvatarImageView);
                             mNameTextView.setText(response.getString("name"));
                             mUserNameTextView.setText(response.getString("login"));

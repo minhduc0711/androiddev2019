@@ -12,7 +12,7 @@ import com.usth.group10.githubclient.R;
 
 
 public class OverviewProfileFragment extends Fragment {
-    private ProfileFragment mParentFragment;
+    private ProfileActivity mProfileActivity;
     private Button mFollowersButton;
     private Button mFollowingButton;
 
@@ -26,13 +26,13 @@ public class OverviewProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_overview_profile, container, false);
 
-        mParentFragment = (ProfileFragment) getParentFragment();
+        mProfileActivity = (ProfileActivity) getActivity();
 
         mFollowersButton = view.findViewById(R.id.button_profile_followers);
         mFollowersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mParentFragment.setPage(5);
+                mProfileActivity.setPage(5);
             }
         });
 
@@ -40,7 +40,7 @@ public class OverviewProfileFragment extends Fragment {
         mFollowingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mParentFragment.setPage(6);
+                mProfileActivity.setPage(6);
             }
         });
 

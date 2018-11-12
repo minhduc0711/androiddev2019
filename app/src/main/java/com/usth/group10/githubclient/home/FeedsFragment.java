@@ -127,7 +127,6 @@ public class FeedsFragment extends Fragment {
         String username = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
                             .getString(MySingleton.KEY_USERNAME, "");
         String url = "https://api.github.com/users/" + username + "/received_events?access_token=" + access_token;
-        Log.d(TAG, url);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                     @Override

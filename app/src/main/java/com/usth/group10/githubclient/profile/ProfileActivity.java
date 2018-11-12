@@ -1,61 +1,75 @@
 package com.usth.group10.githubclient.profile;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.google.android.material.tabs.TabLayout;
-import com.usth.group10.githubclient.home.FeedsFragment;
-import com.usth.group10.githubclient.others.NothingHereFragment;
-import com.usth.group10.githubclient.R;
-
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class ProfileFragment extends Fragment {
+import com.google.android.material.tabs.TabLayout;
+import com.usth.group10.githubclient.R;
+import com.usth.group10.githubclient.home.FeedsFragment;
+import com.usth.group10.githubclient.others.NothingHereFragment;
+
+public class ProfileActivity extends AppCompatActivity {
+    private static final String KEY_USER_URL = "user_url";
+
+    private Toolbar mToolbar;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
 
-    public ProfileFragment() {
-        // Required empty public constructor
+    public static Intent newIntent(Context context, String userUrl) {
+        Intent intent = new Intent(context, ProfileActivity.class);
+        intent.putExtra(KEY_USER_URL, userUrl);
+        return intent;
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);
 
-        // set Adapter
-        PagerAdapter adapter = new HomeFragmentPagerAdapter(getChildFragmentManager());
-        mViewPager = view.findViewById(R.id.view_pager_profile);
+        mToolbar = findViewById(R.id.toolbar_profile);
+        mToolbar.setTitle(R.string.title_activity_profile);
+        setSupportActionBar(mToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        PagerAdapter adapter = new ProfileFragmentPagerAdapter(getSupportFragmentManager());
+        mViewPager = findViewById(R.id.view_pager_profile);
         mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(adapter);
 
-
         //set header for tab
-        mTabLayout = view.findViewById(R.id.tab_layout_profile);
+        mTabLayout = findViewById(R.id.tab_layout_profile);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-
-        return view;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-    private static class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
+    private static class ProfileFragmentPagerAdapter extends FragmentPagerAdapter {
         private final int PAGE_COUNT = 7;
         private String titles[] = new String[] { "Overview", "Feed", "Repositories","Starred",
                 "Gists","Followers","Following" };
-        private HomeFragmentPagerAdapter(FragmentManager fm) {
+        private ProfileFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
         }
         @Override
@@ -88,5 +102,3 @@ public class ProfileFragment extends Fragment {
         mViewPager.setCurrentItem(page);
     }
 }
-
-
