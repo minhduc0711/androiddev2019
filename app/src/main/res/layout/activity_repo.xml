@@ -11,12 +11,13 @@
 
     <!-- id: repo_info -->
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_repo"
         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
         android:background="@color/primaryColor"
-        android:id="@+id/toolbar_repo"
         android:minHeight="?attr/actionBarSize"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -62,24 +63,241 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- id: toolbar -->
-    <!-- README - FILES - COMMITS - RELEASE - CONTRIBUTIONS -->
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tablayout"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:minHeight="?attr/actionBarSize"
+    <Toolbar
+        android:id="@+id/toolbar_symbol"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    </com.google.android.material.tabs.TabLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="10" >
 
-    <!-- pager -->
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/pager"
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2.2">
+
+                <ImageButton
+                    android:id="@+id/back_button"
+                    android:tint="@color/black"
+                    android:background="@color/white"
+                    android:src="@drawable/ic_menu_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                     />
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:weightSum="5"
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5" >
+
+                <!-- EYE button-->
+                <LinearLayout
+                    android:id="@+id/views_button"
+                    android:orientation="vertical"
+                    android:weightSum="2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageButton
+                        android:id="@+id/views_symbol"
+                        android:paddingTop="10dp"
+                        android:src="@drawable/ic_menu_eye"
+                        android:tint="@color/black"
+                        android:background="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/number_of_views"
+                        android:paddingTop="3dp"
+                        android:paddingLeft="14dp"
+                        android:text="0"
+                        android:textSize="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+
+                <!-- STAR -->
+                <LinearLayout
+                    android:id="@+id/stars_button"
+                    android:orientation="vertical"
+                    android:weightSum="2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageButton
+                        android:id="@+id/stars_symbol"
+                        android:paddingTop="10dp"
+                        android:src="@drawable/ic_menu_star"
+                        android:tint="@color/black"
+                        android:background="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/number_of_star"
+                        android:paddingTop="3dp"
+                        android:paddingLeft="14dp"
+                        android:text="0"
+                        android:textSize="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+
+                <!-- FORK -->
+                <LinearLayout
+                    android:id="@+id/fork_button"
+                    android:orientation="vertical"
+                    android:weightSum="2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageButton
+                        android:id="@+id/fork_symbol"
+                        android:paddingTop="10dp"
+                        android:src="@drawable/ic_menu_fork"
+                        android:tint="@color/black"
+                        android:background="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/number_of_fork"
+                        android:paddingTop="3dp"
+                        android:paddingLeft="14dp"
+                        android:text="0"
+                        android:textSize="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+
+                <!-- WIKI -->
+                <LinearLayout
+                    android:id="@+id/wiki_button"
+                    android:orientation="vertical"
+                    android:weightSum="2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageButton
+                        android:id="@+id/wiki_symbol"
+                        android:paddingTop="10dp"
+                        android:src="@drawable/ic_menu_wiki"
+                        android:tint="@color/black"
+                        android:background="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/wiki"
+                        android:paddingTop="3dp"
+                        android:paddingLeft="5dp"
+                        android:text="Wiki"
+                        android:textSize="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+
+                <!-- PIN -->
+                <LinearLayout
+
+                    android:id="@+id/pin_button"
+                    android:orientation="vertical"
+                    android:weightSum="2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageButton
+                        android:id="@+id/pin_symbol"
+                        android:paddingTop="10dp"
+                        android:src="@drawable/ic_menu_pin"
+                        android:tint="@color/black"
+                        android:background="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/pin"
+                        android:paddingTop="3dp"
+                        android:paddingLeft="9dp"
+                        android:text="Pin"
+                        android:textSize="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2.8">
+
+                <ImageButton
+                    android:id="@+id/popup_menu"
+                    android:tint="@color/black"
+                    android:background="@color/white"
+                    android:src="@drawable/ic_menu_popup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+    </Toolbar>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        />
 
-    </androidx.viewpager.widget.ViewPager>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+        android:id="@+id/bottom_nav_repo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="bottom"
+        app:menu="@menu/bottom_nav_repo" />
 
 </LinearLayout>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/item_bottom_nav_repo_code"
+        android:title="Code"
+        android:icon="@drawable/ic_menu_code"
+        android:iconTint="@color/grey_icon"
+        />
+
+    <item
+        android:id="@+id/item_bottom_nav_repo_issues"
+        android:title="Issues"
+        android:icon="@drawable/ic_menu_issues"
+        android:iconTint="@color/grey_icon"
+        />
+
+    <item
+        android:id="@+id/item_bottom_nav_repo_pull_requests"
+        android:title="Pull Requests"
+        android:icon="@drawable/ic_menu_pull_requests"
+        android:iconTint="@color/grey_icon"
+        />
+
+    <item
+        android:id="@+id/item_bottom_nav_repo_projects"
+        android:title="Projects"
+        android:icon="@drawable/ic_menu_project"
+        android:iconTint="@color/grey_icon"
+        />
+
+
+
+</menu>
