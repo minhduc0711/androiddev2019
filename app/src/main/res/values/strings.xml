@@ -2,6 +2,8 @@
     <string name="app_name">Github Lite</string>
     <string name="title_activity_home">HomeActivity</string>
 
+    <string name="action_bar_item_search">Search</string>
+
     <string name="drawer_home">Home</string>
     <string name="drawer_profile">Profile</string>
     <string name="drawer_trending">Trending</string>

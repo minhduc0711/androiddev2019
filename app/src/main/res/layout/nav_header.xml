@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:padding="16dp"
@@ -7,11 +8,12 @@
     android:gravity="bottom">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/image_user_avatar_nav_header"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_weight="1"
         android:layout_marginStart="-5dp"
-        android:src="@drawable/profile_pic"
+        tools:src="@drawable/profile_pic"
         android:contentDescription="@string/description_profile_pic"/>
 
     <LinearLayout
@@ -21,18 +23,20 @@
         android:layout_weight="3"
         android:layout_marginStart="10dp">
         <TextView
+            android:id="@+id/text_name_nav_header"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:text="Phạm Minh Đức"/>
+            tools:text="Phạm Minh Đức"/>
         <TextView
+            android:id="@+id/text_username_nav_header"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:textColor="@color/black"
-            android:text="minhduc0711"/>
+            tools:text="minhduc0711"/>
     </LinearLayout>
 
 </LinearLayout>

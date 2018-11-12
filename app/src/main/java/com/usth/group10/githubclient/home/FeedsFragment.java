@@ -13,6 +13,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,16 +122,18 @@ public class FeedsFragment extends Fragment {
     }
 
     private void updateFeedsList() {
-        String access_token = getContext().getSharedPreferences(LoginActivity.PREF_ACCESS_TOKEN, Context.MODE_PRIVATE)
-                                    .getString(LoginActivity.KEY_ACCESS_TOKEN, "");
-        String url = "https://api.github.com/users/minhduc0711/received_events?access_token=" + access_token;
-
+        String access_token = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
+                                    .getString(MySingleton.KEY_ACCESS_TOKEN, "");
+        String username = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
+                            .getString(MySingleton.KEY_USERNAME, "");
+        String url = "https://api.github.com/users/" + username + "/received_events?access_token=" + access_token;
+        Log.d(TAG, url);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         ArrayList<Feed> feedsList = processRawJson(response);
-
+                        
                         mFeedsAdapter = new FeedsAdapter(feedsList);
                         mFeedsRecyclerView.setAdapter(mFeedsAdapter);
                     }
