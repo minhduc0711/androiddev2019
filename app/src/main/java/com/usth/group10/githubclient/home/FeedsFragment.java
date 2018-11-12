@@ -11,10 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.text.Html;
-import android.text.Spannable;
 import android.text.Spanned;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 import com.usth.group10.githubclient.LoginActivity;
 import com.usth.group10.githubclient.R;
+import com.usth.group10.githubclient.others.MySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -124,8 +121,6 @@ public class FeedsFragment extends Fragment {
     }
 
     private void updateFeedsList() {
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-
         String access_token = getContext().getSharedPreferences(LoginActivity.PREF_ACCESS_TOKEN, Context.MODE_PRIVATE)
                                     .getString(LoginActivity.KEY_ACCESS_TOKEN, "");
         String url = "https://api.github.com/users/minhduc0711/received_events?access_token=" + access_token;
@@ -145,7 +140,7 @@ public class FeedsFragment extends Fragment {
                         Toast.makeText(getContext(), "Loading feeds failed", Toast.LENGTH_SHORT).show();
                     }
                 });
-        queue.add(jsonArrayRequest);
+        MySingleton.getInstance(getActivity()).addToRequestQueue(jsonArrayRequest);
     }
 
     private ArrayList<Feed> processRawJson(JSONArray response) {

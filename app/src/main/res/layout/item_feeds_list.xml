@@ -6,7 +6,7 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/image_user_avatar_feeds"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         android:layout_width="50dp"
         android:layout_height="50dp"
         tools:src="@drawable/profile_pic"/>
@@ -40,7 +40,5 @@
             tools:text="1 hour ago"/>
 
     </LinearLayout>
-
-
 
 </LinearLayout>
