@@ -2,6 +2,7 @@ package com.usth.group10.githubclient;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -16,19 +17,21 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.usth.group10.githubclient.others.MySingleton;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
-    public static final String PREF_ACCESS_TOKEN = "pref_access_token";
-    public static final String KEY_ACCESS_TOKEN = "access_token";
-
     private static final String clientId = "ea654ab9b8b11cbb932d";
     private static final String clientSecret = "a44b767cda60c324b9c5aeff755bb8a1953b978d";
     private static final String redirectUri = "githublite://callback";
 
     private Button mLoginButton;
+
+    public static Intent newIntent(Context context) {
+        return new Intent(context, LoginActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +65,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void getAccessToken(final String code) {
-        RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
         StringRequest sr = new StringRequest(Request.Method.POST,"https://github.com/login/oauth/access_token", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -75,8 +77,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 if (access_token != null) {
-                    SharedPreferences.Editor editor = getSharedPreferences(PREF_ACCESS_TOKEN, MODE_PRIVATE).edit();
-                    editor.putString(KEY_ACCESS_TOKEN, access_token);
+                    SharedPreferences.Editor editor = getSharedPreferences(MySingleton.PREF_LOGIN_INFO, MODE_PRIVATE).edit();
+                    editor.putString(MySingleton.KEY_ACCESS_TOKEN, access_token);
                     editor.apply();
 
                     Intent intent = MainActivity.newIntent(LoginActivity.this);
@@ -108,6 +110,6 @@ public class LoginActivity extends AppCompatActivity {
                 return params;
             }
         };
-        queue.add(sr);
+        MySingleton.getInstance(this).addToRequestQueue(sr);
     }
 }

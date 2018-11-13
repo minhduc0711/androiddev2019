@@ -10,6 +10,10 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
 public class MySingleton {
+    public static final String PREF_LOGIN_INFO = "pref_login_info";
+    public static final String KEY_ACCESS_TOKEN = "access_token";
+    public static final String KEY_USERNAME = "username";
+
     private static MySingleton mInstance;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
