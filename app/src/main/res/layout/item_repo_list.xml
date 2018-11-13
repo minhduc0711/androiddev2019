@@ -5,10 +5,11 @@
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/image_avatar_feeds"
+        android:id="@+id/image_avatar_repo_list"
         android:layout_margin="15dp"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:focusable="true"
         tools:src="@drawable/profile_pic"/>
 
     <LinearLayout
@@ -18,26 +19,19 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/text_title_feeds"
+            android:id="@+id/text_name_repo_list"
             android:textColor="@color/black"
             android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Someone forked my repo"/>
+            tools:text="minhduc0711/github-android"/>
 
         <TextView
-            android:id="@+id/text_content_feeds"
+            android:id="@+id/text_info_repo_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            tools:text="Added new feature"/>
-
-        <TextView
-            android:id="@+id/text_time_feeds"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            tools:text="1 hour ago"/>
+            tools:text="Repo info here"/>
 
     </LinearLayout>
 
