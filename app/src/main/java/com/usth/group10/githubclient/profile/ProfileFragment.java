@@ -3,7 +3,6 @@ package com.usth.group10.githubclient.profile;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -20,7 +19,7 @@ import com.usth.group10.githubclient.R;
 import com.usth.group10.githubclient.home.FeedsFragment;
 import com.usth.group10.githubclient.others.NothingHereFragment;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileFragment extends AppCompatActivity {
     private static final String KEY_USER_URL = "user_url";
 
     private Toolbar mToolbar;
@@ -28,7 +27,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
 
     public static Intent newIntent(Context context, String userUrl) {
-        Intent intent = new Intent(context, ProfileActivity.class);
+        Intent intent = new Intent(context, ProfileFragment.class);
         intent.putExtra(KEY_USER_URL, userUrl);
         return intent;
     }
@@ -36,7 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.fragment_profile);
 
         mToolbar = findViewById(R.id.toolbar_profile);
         mToolbar.setTitle(R.string.title_activity_profile);

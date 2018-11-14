@@ -18,6 +18,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.usth.group10.githubclient.others.MySingleton;
 import com.usth.group10.githubclient.others.NothingHereFragment;
 import com.usth.group10.githubclient.R;
+import com.usth.group10.githubclient.repository.CodePackage.CommitsFragment;
 
 import org.json.JSONArray;
 
@@ -82,7 +83,7 @@ public class CodeFragment extends Fragment {
             switch (page) {
                 case 0: return NothingHereFragment.newInstance("issues");
                 case 1: return NothingHereFragment.newInstance("issues");
-                case 2: return NothingHereFragment.newInstance("issues");
+                case 2: return new CommitsFragment();
                 case 3: return NothingHereFragment.newInstance("issues");
                 case 4: return NothingHereFragment.newInstance("issues");
                 default: return new androidx.fragment.app.Fragment();

@@ -58,6 +58,7 @@ public class CommitsFragment extends Fragment {
         mCommitsRecyclerView = view.findViewById(R.id.recycler_view_commits);
         mCommitsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        updateCommitsList();
         return view;
     }
 
@@ -90,7 +91,7 @@ public class CommitsFragment extends Fragment {
     private class CommitsViewHolder extends RecyclerView.ViewHolder {
         private CircleImageView mUserAvatar;
         private TextView mTextViewTitle;
-        private TextView mTextViewContent;
+        private TextView mTextViewUsername;
         private TextView mTextViewTime;
 
         private CommitsViewHolder(LayoutInflater inflater, ViewGroup parent){
@@ -99,18 +100,13 @@ public class CommitsFragment extends Fragment {
             mUserAvatar = itemView.findViewById(R.id.image_user_avatar_feeds);
             mTextViewTitle = itemView.findViewById(R.id.text_title_feeds);
             mTextViewTime = itemView.findViewById(R.id.text_time_feeds);
-            mTextViewContent = itemView.findViewById(R.id.text_content_feeds);
+            mTextViewUsername = itemView.findViewById(R.id.text_content_feeds);
         }
 
         private void bind(CommitsFeed commitsFeed){
             mTextViewTitle.setText(commitsFeed.getTitle());
             mTextViewTime.setText(commitsFeed.getTime());
-            if (commitsFeed.getContent() != null){
-                mTextViewContent.setVisibility(View.VISIBLE);
-                mTextViewContent.setText(commitsFeed.getContent());
-            } else {
-                mTextViewContent.setVisibility(View.GONE);
-            }
+            mTextViewUsername.setText(commitsFeed.getUsername());
             Picasso.get().load(commitsFeed.getUserAvatarUrl()).into(mUserAvatar);
         }
     }
@@ -118,14 +114,14 @@ public class CommitsFragment extends Fragment {
     private void updateCommitsList() {
         String username = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
                             .getString(MySingleton.KEY_USERNAME, "");
-        String url = "https://api.github.com/repos/" + username + "androiddev2019/commits";
+        String url = "https://api.github.com/repos/wH1t3-l0tUs/androiddev2019/commits";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        ArrayList<CommitsFeed> feedsList = processRawJson(response);
+                        ArrayList<CommitsFeed> commitsFeedsList = processRawJson(response);
 
-                        mCommitsAdapter = new CommitsFeedAdapter(feedsList);
+                        mCommitsAdapter = new CommitsFeedAdapter(commitsFeedsList);
                         mCommitsRecyclerView.setAdapter(mCommitsAdapter);
                     }
 
@@ -142,21 +138,21 @@ public class CommitsFragment extends Fragment {
 
     private ArrayList<CommitsFeed> processRawJson(JSONArray response){
         JSONObject currentItem;
-        ArrayList<CommitsFeed> commitsFeedsList = new ArrayList<>();
+        ArrayList<CommitsFeed> commitsFeedsList = new ArrayList<>();String access_token = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
+                .getString(MySingleton.KEY_ACCESS_TOKEN, "");
 
-        String title, content, userAvatarUrl, userUrl, time;
-        String username, action;
+        String title, content, userAvatarUrl, time;
+        String username;
 
         for (int i = 0; i < response.length(); i++){
-            content = null;
             try {
                 currentItem = response.getJSONObject(i);
-                username = currentItem.getJSONObject("commiter").getString("login");
+                username = currentItem.getJSONObject("committer").getString("login");
                 title = currentItem.getJSONObject("commit").getString("message");
-                userAvatarUrl = currentItem.getJSONObject("commiter").getString("avatar_url");
+                userAvatarUrl = currentItem.getJSONObject("committer").getString("avatar_url");
                 time = currentItem.getJSONObject("commit").getJSONObject("author").getString("date");
 
-                commitsFeedsList.add(new CommitsFeed(title, content, userAvatarUrl, time));
+                commitsFeedsList.add(new CommitsFeed(title, username, userAvatarUrl, time));
 
             } catch (JSONException e){
                 e.printStackTrace();
@@ -168,13 +164,13 @@ public class CommitsFragment extends Fragment {
 
     private class CommitsFeed {
         private String mTitle;
-        private String mContent;
+        private String mUsername;
         private String mUserAvatarUrl;
         private String mTime;
 
-        private CommitsFeed(String title, String content, String userAvatarUrl, String time){
+        private CommitsFeed(String title, String username, String userAvatarUrl, String time){
             mTitle = title;
-            mContent = content;
+            mUsername = username;
             mUserAvatarUrl = userAvatarUrl;
             setTime(time);
         }
@@ -182,7 +178,7 @@ public class CommitsFragment extends Fragment {
 
         public  String getUserAvatarUrl() { return mUserAvatarUrl; }
 
-        public String getContent() { return mContent; }
+        public String getUsername() { return mUsername; }
 
         public String getTime() { return mTime; }
 
