@@ -82,11 +82,11 @@ public class ProfileActivity extends AppCompatActivity {
             switch (page) {
                 case 0: return new OverviewProfileFragment();
                 case 1: return new FeedsFragment();
-                case 2: return NothingHereFragment.newInstance(titles[page]);
+                case 2: return new RepositoriesFragment();
                 case 3: return NothingHereFragment.newInstance(titles[page]);
                 case 4: return NothingHereFragment.newInstance(titles[page]);
-                case 5: return NothingHereFragment.newInstance(titles[page]);
-                case 6: return NothingHereFragment.newInstance(titles[page]);
+                case 5: return new FollowerFragment();
+                case 6: return new FollowingFragment();
                 default: return new Fragment();
             }
         }
