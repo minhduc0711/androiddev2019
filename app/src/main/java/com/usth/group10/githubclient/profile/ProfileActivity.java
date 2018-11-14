@@ -53,6 +53,9 @@ public class ProfileActivity extends AppCompatActivity {
         mTabLayout = findViewById(R.id.tab_layout_profile);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+
+
+
     }
 
     @Override
@@ -67,6 +70,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     private static class ProfileFragmentPagerAdapter extends FragmentPagerAdapter {
         private final int PAGE_COUNT = 7;
+
+
+
         private String titles[] = new String[] { "Overview", "Feed", "Repositories","Starred",
                 "Gists","Followers","Following" };
         private ProfileFragmentPagerAdapter(FragmentManager fm) {
@@ -83,11 +89,11 @@ public class ProfileActivity extends AppCompatActivity {
             switch (page) {
                 case 0: return new OverviewProfileFragment();
                 case 1: return new FeedsFragment();
-                case 2: return NothingHereFragment.newInstance(titles[page]);
+                case 2: return new RepositoriesFragment();
                 case 3: return NothingHereFragment.newInstance(titles[page]);
                 case 4: return NothingHereFragment.newInstance(titles[page]);
-                case 5: return NothingHereFragment.newInstance(titles[page]);
-                case 6: return NothingHereFragment.newInstance(titles[page]);
+                case 5: return new FollowerFragment();
+                case 6: return new FollowingFragment();
                 default: return new Fragment();
             }
         }
