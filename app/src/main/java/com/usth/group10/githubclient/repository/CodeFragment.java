@@ -3,30 +3,18 @@ package com.usth.group10.githubclient.repository;
 
 import androidx.fragment.app.FragmentManager;
 
-import android.content.Context;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
-import android.text.Spanned;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.google.android.material.tabs.TabLayout;
-import com.usth.group10.githubclient.others.MySingleton;
 import com.usth.group10.githubclient.others.NothingHereFragment;
 import com.usth.group10.githubclient.R;
-import com.usth.group10.githubclient.repository.CodePackage.CommitsFragment;
-
-import org.json.JSONArray;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import com.usth.group10.githubclient.repository.codePackage.CommitsFragment;
+import com.usth.group10.githubclient.repository.codePackage.ContributorsFragment;
 
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
@@ -85,7 +73,7 @@ public class CodeFragment extends Fragment {
                 case 1: return NothingHereFragment.newInstance("issues");
                 case 2: return new CommitsFragment();
                 case 3: return NothingHereFragment.newInstance("issues");
-                case 4: return NothingHereFragment.newInstance("issues");
+                case 4: return new ContributorsFragment();
                 default: return new androidx.fragment.app.Fragment();
             }
         }
