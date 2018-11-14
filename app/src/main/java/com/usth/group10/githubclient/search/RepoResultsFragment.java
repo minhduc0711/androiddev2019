@@ -1,10 +1,15 @@
 package com.usth.group10.githubclient.search;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.format.DateUtils;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -127,7 +133,7 @@ public class RepoResultsFragment extends Fragment {
         private void bind(final Repo repo) {
             Picasso.get().load(repo.getAvatarUrl()).into(mImageUserAvatar);
             mTextViewRepoName.setText(repo.getRepoName());
-            mTextViewRepoInfo.setText(repo.getRepoInfo());
+            mTextViewRepoInfo.setText(repo.getSpannableInfo());
 
             mImageUserAvatar.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -175,7 +181,7 @@ public class RepoResultsFragment extends Fragment {
     private class Repo {
         private String mAvatarUrl;
         private String mRepoName;
-        private String mRepoInfo;
+        private Spannable mSpannableInfo;
 
         private int mStarredCount;
         private int mForkedCount;
@@ -193,17 +199,43 @@ public class RepoResultsFragment extends Fragment {
             mStarredCount = starredCount;
             mForkedCount = forkedCount;
             setTime(updatedTime);
-            mSize = size / 1000;
+            mSize = size;
             mLanguage = language;
 
             mUserUrl = userUrl;
             mRepoUrl = repoUrl;
 
-            setRepoInfo();
+            mSpannableInfo = getImageSpannable(getActivity());
         }
 
-        private void setRepoInfo() {
-            mRepoInfo = mStarredCount + " " + mForkedCount + " " + mUpdatedTime + " " + mSize + " " + mLanguage;
+        private Spannable getImageSpannable(Context context) {
+            int[] iconIds = {R.drawable.ic_star_border_black_24dp, R.drawable.ic_repo_forked, R.drawable.ic_access_time_black_24dp,
+                              R.drawable.ic_size_bulleted_black_24dp};
+            int iconIndex = 0;
+
+            String sizeUnit;
+            if (mSize >= 1000000) {
+                mSize = mSize / 1000000;
+                sizeUnit = " GB ";
+            } else if (mSize >= 1000) {
+                mSize = mSize / 1000;
+                sizeUnit = " MB ";
+            } else sizeUnit = " KB ";
+
+            DecimalFormat df = new DecimalFormat("#.00");
+            String text = " * " + mStarredCount + " * " + mForkedCount + " * " + mUpdatedTime + " * " + df.format(mSize) + sizeUnit + mLanguage;
+            Drawable drawable;
+            SpannableStringBuilder builder = new SpannableStringBuilder(text);
+            for (int i = 0; i < builder.length(); i++) {
+                if (Character.toString(builder.charAt(i)).equals("*")) {
+                    drawable = getResources().getDrawable(iconIds[iconIndex]);
+                    drawable.setBounds(0, 0, 14, 14);
+                    builder.setSpan(new ImageSpan(context, iconIds[iconIndex]), i, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    i++;
+                    iconIndex++;
+                }
+            }
+            return builder;
         }
 
         public void setTime(String time) {
@@ -230,16 +262,16 @@ public class RepoResultsFragment extends Fragment {
             return mRepoName;
         }
 
-        public String getRepoInfo() {
-            return mRepoInfo;
-        }
-
         public String getUserUrl() {
             return mUserUrl;
         }
 
         public String getRepoUrl() {
             return mRepoUrl;
+        }
+
+        public Spannable getSpannableInfo() {
+            return mSpannableInfo;
         }
     }
 }

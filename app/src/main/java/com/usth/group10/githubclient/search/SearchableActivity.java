@@ -31,6 +31,8 @@ import com.usth.group10.githubclient.others.NothingHereFragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class SearchableActivity extends AppCompatActivity {
@@ -92,8 +94,15 @@ public class SearchableActivity extends AppCompatActivity {
     }
 
     private void performSearch(String query) {
-        String repoSearchUrl = "https://api.github.com/search/repositories?q=" + query;
-        String userSearchUrl = "https://api.github.com/search/users?q=" + query;
+        String encodedQuery;
+        try {
+            encodedQuery = URLEncoder.encode(query, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            encodedQuery = "";
+            e.printStackTrace();
+        }
+        String repoSearchUrl = "https://api.github.com/search/repositories?q=" + encodedQuery;
+        String userSearchUrl = "https://api.github.com/search/users?q=" + encodedQuery;
 
         JsonObjectRequest repoRequest = new JsonObjectRequest
                 (Request.Method.GET, repoSearchUrl, null, new Response.Listener<JSONObject>() {
@@ -109,7 +118,6 @@ public class SearchableActivity extends AppCompatActivity {
                                     mPagerAdapter.replaceFragment(
                                             RepoResultsFragment.newInstance(response.getJSONArray("items").toString()), 0);
                             }
-                            mProgressBarLayout.setVisibility(View.GONE);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -136,9 +144,10 @@ public class SearchableActivity extends AppCompatActivity {
                                     mPagerAdapter.replaceFragment(
                                             UserResultsFragment.newInstance(response.getJSONArray("items").toString()), 1);
                             }
-                            mProgressBarLayout.setVisibility(View.GONE);
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        } finally {
+                            mProgressBarLayout.setVisibility(View.GONE);
                         }
                     }
                 }, new Response.ErrorListener() {
