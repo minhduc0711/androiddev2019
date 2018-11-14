@@ -25,7 +25,7 @@
 
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/userImage"
+                android:id="@+id/avatar"
                 android:src="@drawable/profile_pic"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
@@ -36,19 +36,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/userImage"
+                android:layout_toRightOf="@+id/avatar"
                 android:orientation="vertical">
 
                 <TextView
                     style="@style/TextAppearance.MaterialComponents.Subtitle1"
                     android:layout_margin="5dp"
-                    android:id="@+id/repoLink"
+                    android:id="@+id/repoName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="minhduc0711/github-android" />
 
                 <TextView
-                    android:id="@+id/timeRepoUpdated"
+                    android:id="@+id/repoInfo"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="5dp"
@@ -88,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                     />
+                    />
 
             </RelativeLayout>
 
@@ -110,8 +110,8 @@
                     android:layout_weight="1">
 
                     <ImageButton
-                        android:id="@+id/views_symbol"
-                        android:paddingTop="10dp"
+                        android:id="@+id/eye_symbol"
+                        android:layout_gravity="center"
                         android:src="@drawable/ic_menu_eye"
                         android:tint="@color/black"
                         android:background="@color/white"
@@ -120,9 +120,8 @@
                         android:layout_weight="1"/>
 
                     <TextView
-                        android:id="@+id/number_of_views"
-                        android:paddingTop="3dp"
-                        android:paddingLeft="14dp"
+                        android:id="@+id/subscribers"
+                        android:gravity="center"
                         android:text="0"
                         android:textSize="15dp"
                         android:layout_width="match_parent"
@@ -142,7 +141,7 @@
 
                     <ImageButton
                         android:id="@+id/stars_symbol"
-                        android:paddingTop="10dp"
+                        android:layout_gravity="center"
                         android:src="@drawable/ic_menu_star"
                         android:tint="@color/black"
                         android:background="@color/white"
@@ -151,9 +150,8 @@
                         android:layout_weight="1"/>
 
                     <TextView
-                        android:id="@+id/number_of_star"
-                        android:paddingTop="3dp"
-                        android:paddingLeft="14dp"
+                        android:id="@+id/starredCount"
+                        android:gravity="center"
                         android:text="0"
                         android:textSize="15dp"
                         android:layout_width="match_parent"
@@ -173,7 +171,7 @@
 
                     <ImageButton
                         android:id="@+id/fork_symbol"
-                        android:paddingTop="10dp"
+                        android:layout_gravity="center"
                         android:src="@drawable/ic_menu_fork"
                         android:tint="@color/black"
                         android:background="@color/white"
@@ -182,9 +180,8 @@
                         android:layout_weight="1"/>
 
                     <TextView
-                        android:id="@+id/number_of_fork"
-                        android:paddingTop="3dp"
-                        android:paddingLeft="14dp"
+                        android:id="@+id/forkedCount"
+                        android:gravity="center"
                         android:text="0"
                         android:textSize="15dp"
                         android:layout_width="match_parent"
@@ -204,7 +201,7 @@
 
                     <ImageButton
                         android:id="@+id/wiki_symbol"
-                        android:paddingTop="10dp"
+                        android:layout_gravity="center"
                         android:src="@drawable/ic_menu_wiki"
                         android:tint="@color/black"
                         android:background="@color/white"
@@ -214,8 +211,7 @@
 
                     <TextView
                         android:id="@+id/wiki"
-                        android:paddingTop="3dp"
-                        android:paddingLeft="5dp"
+                        android:gravity="center"
                         android:text="Wiki"
                         android:textSize="15dp"
                         android:layout_width="match_parent"
@@ -236,7 +232,7 @@
 
                     <ImageButton
                         android:id="@+id/pin_symbol"
-                        android:paddingTop="10dp"
+                        android:layout_gravity="center"
                         android:src="@drawable/ic_menu_pin"
                         android:tint="@color/black"
                         android:background="@color/white"
@@ -246,8 +242,7 @@
 
                     <TextView
                         android:id="@+id/pin"
-                        android:paddingTop="3dp"
-                        android:paddingLeft="9dp"
+                        android:gravity="center"
                         android:text="Pin"
                         android:textSize="15dp"
                         android:layout_width="match_parent"

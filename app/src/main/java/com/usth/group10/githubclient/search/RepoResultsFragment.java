@@ -141,6 +141,23 @@ public class RepoResultsFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = RepoActivity.newIntent(getActivity(), repo.getRepoUrl());
+
+//  KIEU added
+                    String avatarUrl = repo.getAvatarUrl();
+                    intent.putExtra(RepoActivity.AVATAR_URL, avatarUrl);
+
+                    String repoName = mTextViewRepoName.getText().toString();
+                    intent.putExtra(RepoActivity.REPO_NAME, repoName);
+
+                    String repoInfo = repo.mRepoInfo2;
+                    intent.putExtra(RepoActivity.REPO_INFO, repoInfo);
+
+                    int forkedCount = repo.mForkedCount;
+                    intent.putExtra(RepoActivity.FORKED_COUNT, forkedCount);
+
+                    int starredCount = repo.mStarredCount;
+                    intent.putExtra(RepoActivity.STARRED_COUNT, starredCount);
+
                     startActivity(intent);
                 }
             });
@@ -186,6 +203,10 @@ public class RepoResultsFragment extends Fragment {
         private String mUserUrl;
         private String mRepoUrl;
 
+        private String mRepoInfo2; // show in repo layout
+        String sizeView;
+
+
         public Repo(String avatarUrl, String repoName, int starredCount, int forkedCount, String updatedTime, int size, String language, String userUrl, String repoUrl) {
             mAvatarUrl = avatarUrl;
             mRepoName = repoName;
@@ -193,17 +214,29 @@ public class RepoResultsFragment extends Fragment {
             mStarredCount = starredCount;
             mForkedCount = forkedCount;
             setTime(updatedTime);
-            mSize = size / 1000;
+
+
+            if (size >= 1_000_000) {
+                mSize = size / 1_000_000;
+                sizeView = String.valueOf(mSize) + " GB";
+            } else if (size >= 1000) {
+                mSize = size / 1000;
+                sizeView = String.valueOf(mSize) + " MB";
+            } else sizeView = String.valueOf(mSize) + " kB";
+
             mLanguage = language;
 
             mUserUrl = userUrl;
             mRepoUrl = repoUrl;
 
+            mRepoInfo2 = mUpdatedTime+ " " + sizeView + " " + mLanguage;
+
+
             setRepoInfo();
         }
 
         private void setRepoInfo() {
-            mRepoInfo = mStarredCount + " " + mForkedCount + " " + mUpdatedTime + " " + mSize + " " + mLanguage;
+            mRepoInfo = mStarredCount + " " + mForkedCount + " " + mUpdatedTime + " " + sizeView + " " + mLanguage;
         }
 
         public void setTime(String time) {
@@ -221,6 +254,9 @@ public class RepoResultsFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+
+//        KIEU added
+
 
         public String getAvatarUrl() {
             return mAvatarUrl;

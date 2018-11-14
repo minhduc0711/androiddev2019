@@ -138,6 +138,9 @@ public class FeedsFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = RepoActivity.newIntent(getActivity(), feed.getRepoUrl());
+
+                    
+
                     startActivity(intent);
                 }
             });
