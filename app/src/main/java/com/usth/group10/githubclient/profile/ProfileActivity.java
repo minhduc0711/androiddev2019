@@ -66,9 +66,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     private static class ProfileFragmentPagerAdapter extends FragmentPagerAdapter {
         private final int PAGE_COUNT = 7;
-
-
-
         private String titles[] = new String[] { "Overview", "Feed", "Repositories","Starred",
                 "Gists","Followers","Following" };
         private ProfileFragmentPagerAdapter(FragmentManager fm) {
