@@ -52,9 +52,6 @@ public class ProfileActivity extends AppCompatActivity {
         mTabLayout = findViewById(R.id.tab_layout_profile);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-
-
-
     }
 
     @Override
