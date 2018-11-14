@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.usth.group10.githubclient.others.NothingHereFragment;
 import com.usth.group10.githubclient.R;
 import com.usth.group10.githubclient.repository.codePackage.CommitsFragment;
+import com.usth.group10.githubclient.repository.codePackage.ContributorsFragment;
 
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
@@ -72,7 +73,7 @@ public class CodeFragment extends Fragment {
                 case 1: return NothingHereFragment.newInstance("issues");
                 case 2: return new CommitsFragment();
                 case 3: return NothingHereFragment.newInstance("issues");
-                case 4: return NothingHereFragment.newInstance("issues");
+                case 4: return new ContributorsFragment();
                 default: return new androidx.fragment.app.Fragment();
             }
         }
