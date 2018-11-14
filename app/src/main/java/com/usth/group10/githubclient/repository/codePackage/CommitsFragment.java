@@ -97,7 +97,7 @@ public class CommitsFragment extends Fragment {
         private CommitsViewHolder(LayoutInflater inflater, ViewGroup parent){
             super(inflater.inflate(R.layout.item_feeds_list, parent, false));
 
-            mUserAvatar = itemView.findViewById(R.id.image_user_avatar_feeds);
+            mUserAvatar = itemView.findViewById(R.id.image_avatar_feeds);
             mTextViewTitle = itemView.findViewById(R.id.text_title_feeds);
             mTextViewTime = itemView.findViewById(R.id.text_time_feeds);
             mTextViewUsername = itemView.findViewById(R.id.text_content_feeds);

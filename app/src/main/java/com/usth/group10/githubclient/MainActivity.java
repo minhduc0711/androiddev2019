@@ -10,7 +10,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
 import com.usth.group10.githubclient.home.HomeFragment;
 import com.usth.group10.githubclient.others.MySingleton;
-import com.usth.group10.githubclient.profile.ProfileFragment;
+import com.usth.group10.githubclient.profile.ProfileActivity;
 import com.usth.group10.githubclient.search.SearchableActivity;
 
 import androidx.fragment.app.Fragment;
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                             mMainToolbar.setTitle(R.string.app_name);
                             break;
                         case R.id.item_drawer_profile:
-                            intent = ProfileFragment.newIntent(MainActivity.this, mAuthenticatedUserUrl);
+                            intent = ProfileActivity.newIntent(MainActivity.this, mAuthenticatedUserUrl);
                             startActivity(intent);
                             break;
                         case R.id.item_drawer_trending:

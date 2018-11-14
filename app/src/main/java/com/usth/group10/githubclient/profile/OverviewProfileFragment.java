@@ -12,7 +12,7 @@ import com.usth.group10.githubclient.R;
 
 
 public class OverviewProfileFragment extends Fragment {
-    private ProfileFragment mProfileActivity;
+    private ProfileActivity mProfileActivity;
     private Button mFollowersButton;
     private Button mFollowingButton;
 
@@ -26,7 +26,7 @@ public class OverviewProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_overview_profile, container, false);
 
-        mProfileActivity = (ProfileFragment) getActivity();
+        mProfileActivity = (ProfileActivity) getActivity();
 
         mFollowersButton = view.findViewById(R.id.button_profile_followers);
         mFollowersButton.setOnClickListener(new View.OnClickListener() {

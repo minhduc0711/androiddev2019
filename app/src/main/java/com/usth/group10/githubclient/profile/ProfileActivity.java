@@ -19,7 +19,7 @@ import com.usth.group10.githubclient.R;
 import com.usth.group10.githubclient.home.FeedsFragment;
 import com.usth.group10.githubclient.others.NothingHereFragment;
 
-public class ProfileFragment extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity {
     private static final String KEY_USER_URL = "user_url";
 
     private Toolbar mToolbar;
@@ -27,7 +27,7 @@ public class ProfileFragment extends AppCompatActivity {
     private TabLayout mTabLayout;
 
     public static Intent newIntent(Context context, String userUrl) {
-        Intent intent = new Intent(context, ProfileFragment.class);
+        Intent intent = new Intent(context, ProfileActivity.class);
         intent.putExtra(KEY_USER_URL, userUrl);
         return intent;
     }
