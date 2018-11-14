@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 
 import androidx.fragment.app.Fragment;
+
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -16,12 +19,18 @@ import com.usth.group10.githubclient.R;
 
 
 public class RepoActivity extends AppCompatActivity {
-
     private static final String TAG = "RepoActivity";
+    private static final String KEY_REPO_URL = "repo_url";
 
     private ImageButton popupButton;
     private ImageButton backButton;
     private BottomNavigationView mBottomNavigationView;
+
+    public static Intent newIntent(Context context, String repoUrl) {
+        Intent intent = new Intent(context, RepoActivity.class);
+        intent.putExtra(KEY_REPO_URL, repoUrl);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

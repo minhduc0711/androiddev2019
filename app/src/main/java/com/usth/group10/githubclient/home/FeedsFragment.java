@@ -2,6 +2,7 @@ package com.usth.group10.githubclient.home;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.squareup.picasso.Picasso;
 import com.usth.group10.githubclient.R;
 import com.usth.group10.githubclient.others.MySingleton;
+import com.usth.group10.githubclient.profile.ProfileActivity;
+import com.usth.group10.githubclient.repository.RepoActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -99,20 +102,20 @@ public class FeedsFragment extends Fragment {
     }
 
     private class FeedsViewHolder extends RecyclerView.ViewHolder {
-        private CircleImageView mUserAvatar;
+        private CircleImageView mImageUserAvatar;
         private TextView mTextViewTitle;
         private TextView mTextViewTime;
         private TextView mTextViewContent;
 
         private FeedsViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.item_feeds_list, parent, false));
-            mUserAvatar = itemView.findViewById(R.id.image_avatar_feeds);
+            mImageUserAvatar = itemView.findViewById(R.id.image_avatar_feeds);
             mTextViewTitle = itemView.findViewById(R.id.text_title_feeds);
             mTextViewTime = itemView.findViewById(R.id.text_time_feeds);
             mTextViewContent = itemView.findViewById(R.id.text_content_feeds);
         }
 
-        private void bind(Feed feed) {
+        private void bind(final Feed feed) {
             mTextViewTitle.setText(feed.getSpannedTitle());
             mTextViewTime.setText(feed.getTime());
             if (feed.getContent() != null) {
@@ -121,7 +124,23 @@ public class FeedsFragment extends Fragment {
             } else {
                 mTextViewContent.setVisibility(View.GONE);
             }
-            Picasso.get().load(feed.getUserAvatarUrl()).into(mUserAvatar);
+            Picasso.get().load(feed.getUserAvatarUrl()).into(mImageUserAvatar);
+
+            mImageUserAvatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = ProfileActivity.newIntent(getActivity(), feed.getUserUrl());
+                    startActivity(intent);
+                }
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = RepoActivity.newIntent(getActivity(), feed.getRepoUrl());
+                    startActivity(intent);
+                }
+            });
         }
     }
 
