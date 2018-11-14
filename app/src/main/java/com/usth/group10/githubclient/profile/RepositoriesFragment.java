@@ -36,18 +36,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 public class RepositoriesFragment extends androidx.fragment.app.Fragment {
+    private static final String KEY_USER_URL = "user_url";
 
     private RecyclerView mRepositoriesRecycleView;
-    private RecyclerView.Adapter mRepositoriesAdapater;
+    private RecyclerView.Adapter mRepositoriesAdapter;
 
-
-
-
+    public static RepositoriesFragment newInstance(String userUrl) {
+        RepositoriesFragment repositoriesFragment = new RepositoriesFragment();
+        Bundle args = new Bundle();
+        args.putString(KEY_USER_URL, userUrl);
+        repositoriesFragment.setArguments(args);
+        return repositoriesFragment;
+    }
 
     public RepositoriesFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,9 +93,6 @@ public class RepositoriesFragment extends androidx.fragment.app.Fragment {
         }
     }
 
-
-
-
     private  class RepositoriesViewHolder extends RecyclerView.ViewHolder{
         private TextView mName;
         private TextView mFork;
@@ -130,15 +131,9 @@ public class RepositoriesFragment extends androidx.fragment.app.Fragment {
 
 
     private  void updateRepositoriesList(){
-        String username = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
-                .getString(MySingleton.KEY_USERNAME, "");
         String access_token = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
                 .getString(MySingleton.KEY_ACCESS_TOKEN, "");
-
-
-        String url = "https://api.github.com/users/" + username + "/repos?access_token=" + access_token;
-
-
+        String url = getArguments().getString(KEY_USER_URL) + "/repos?access_token=" + access_token;
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -146,8 +141,8 @@ public class RepositoriesFragment extends androidx.fragment.app.Fragment {
                     public void onResponse(JSONArray response) {
                         ArrayList<Repositories> repositoriesList = processRawJson(response);
 
-                        mRepositoriesAdapater = new RepositoriesApdater(repositoriesList);
-                        mRepositoriesRecycleView.setAdapter(mRepositoriesAdapater);
+                        mRepositoriesAdapter = new RepositoriesApdater(repositoriesList);
+                        mRepositoriesRecycleView.setAdapter(mRepositoriesAdapter);
                     }
                 }, new Response.ErrorListener() {
                     @Override

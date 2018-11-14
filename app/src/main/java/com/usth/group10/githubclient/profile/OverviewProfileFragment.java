@@ -32,6 +32,8 @@ import java.util.Locale;
 
 
 public class OverviewProfileFragment extends Fragment {
+    private static final String KEY_USER_URL = "user_url";
+
     private ProfileActivity mProfileActivity;
     private Button mFollowersButton;
     private Button mFollowingButton;
@@ -41,7 +43,13 @@ public class OverviewProfileFragment extends Fragment {
     private CircleImageView mProfileImage;
     private TextView mProfileCreatedDateText;
 
-
+    public static OverviewProfileFragment newInstance(String userUrl) {
+        OverviewProfileFragment overviewProfileFragment = new OverviewProfileFragment();
+        Bundle args = new Bundle();
+        args.putString(KEY_USER_URL, userUrl);
+        overviewProfileFragment.setArguments(args);
+        return overviewProfileFragment;
+    }
 
     public OverviewProfileFragment() {
         // Required empty public constructor
@@ -72,7 +80,7 @@ public class OverviewProfileFragment extends Fragment {
             }
         });
 
-        //Update Profileimage, Time, Name and Id
+        // Update Profileimage, Time, Name and Id
         mProfileLoginText = (TextView)view.findViewById(R.id.text_profile_login);
         mProfileNameText = (TextView)view.findViewById(R.id.text_profile_name);
         mProfileImage = view.findViewById(R.id.image_profile);
@@ -80,17 +88,21 @@ public class OverviewProfileFragment extends Fragment {
 
         String access_token = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
                 .getString(MySingleton.KEY_ACCESS_TOKEN, "");
-        String url = "https://api.github.com/user?access_token=" + access_token;
-
+        String url = getArguments().getString(KEY_USER_URL) + "?access_token=" + access_token;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    //Set Name and Login
+                    // Set Name and Login
                     mProfileLoginText.setText(response.getString("login"));
-                    mProfileNameText.setText(response.getString("name"));
+
+                    if (!response.getString("name").equals("null")) {
+                        mProfileNameText.setText(response.getString("name"));
+                    } else {
+                        mProfileNameText.setVisibility(View.GONE);
+                    }
 
                     //Set Time
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",Locale.US);
@@ -110,16 +122,12 @@ public class OverviewProfileFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getContext(), "Loading profile failed", Toast.LENGTH_SHORT).show();
-
             }
         }
         );
 
         MySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
 
-
-
         return view;
     }
-
 }

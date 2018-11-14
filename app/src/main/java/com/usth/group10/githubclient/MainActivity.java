@@ -148,7 +148,11 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             mAuthenticatedUserUrl = response.getString("url");
                             Picasso.get().load(response.getString("avatar_url")).into(mUserAvatarImageView);
-                            mNameTextView.setText(response.getString("name"));
+                            if (!response.getString("name").equals("null")) {
+                                mNameTextView.setText(response.getString("name"));
+                            } else {
+                                mNameTextView.setVisibility(View.GONE);
+                            }
                             mUserNameTextView.setText(response.getString("login"));
 
                             SharedPreferences.Editor editor = getSharedPreferences(MySingleton.PREF_LOGIN_INFO, MODE_PRIVATE).edit();

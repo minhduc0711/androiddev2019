@@ -31,10 +31,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FollowingFragment extends Fragment {
+    private static final String KEY_USER_URL = "user_url";
 
     private RecyclerView mFollowingRecycleView;
     private RecyclerView.Adapter mFollowingAdapter;
 
+    public static FollowingFragment newInstance(String userUrl) {
+        FollowingFragment followingFragment = new FollowingFragment();
+        Bundle args = new Bundle();
+        args.putString(KEY_USER_URL, userUrl);
+        followingFragment.setArguments(args);
+        return followingFragment;
+    }
 
     public FollowingFragment() {
         // Required empty public constructor
@@ -51,7 +59,6 @@ public class FollowingFragment extends Fragment {
         updateFollowingList();
         return  view;
     }
-
 
     private class FollowingAdapter extends RecyclerView.Adapter<FollowingViewHolder>{
         private ArrayList<FollowingFragment.Following> mFollowingList;
@@ -103,13 +110,10 @@ public class FollowingFragment extends Fragment {
 
     }
 
-
-
-
     private void updateFollowingList() {
         String access_token = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
                 .getString(MySingleton.KEY_ACCESS_TOKEN, "");
-        String url = "https://api.github.com/user/following?access_token=" + access_token;
+        String url = getArguments().getString(KEY_USER_URL) + "/following?access_token=" + access_token;
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {

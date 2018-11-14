@@ -43,7 +43,8 @@ public class ProfileActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        PagerAdapter adapter = new ProfileFragmentPagerAdapter(getSupportFragmentManager());
+        String userUrl = getIntent().getStringExtra(KEY_USER_URL);
+        PagerAdapter adapter = new ProfileFragmentPagerAdapter(getSupportFragmentManager(), userUrl);
         mViewPager = findViewById(R.id.view_pager_profile);
         mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(adapter);
@@ -65,11 +66,13 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private static class ProfileFragmentPagerAdapter extends FragmentPagerAdapter {
+        private static String mUserUrl;
         private final int PAGE_COUNT = 7;
         private String titles[] = new String[] { "Overview", "Feed", "Repositories","Starred",
                 "Gists","Followers","Following" };
-        private ProfileFragmentPagerAdapter(FragmentManager fm) {
+        private ProfileFragmentPagerAdapter(FragmentManager fm, String userUrl) {
             super(fm);
+            mUserUrl = userUrl;
         }
         @Override
         public int getCount() {
@@ -80,13 +83,13 @@ public class ProfileActivity extends AppCompatActivity {
         public Fragment getItem(int page) {
             // returns an instance of Fragment corresponding to the specified page
             switch (page) {
-                case 0: return new OverviewProfileFragment();
+                case 0: return OverviewProfileFragment.newInstance(mUserUrl);
                 case 1: return new FeedsFragment();
-                case 2: return new RepositoriesFragment();
+                case 2: return RepositoriesFragment.newInstance(mUserUrl);
                 case 3: return NothingHereFragment.newInstance(titles[page]);
                 case 4: return NothingHereFragment.newInstance(titles[page]);
-                case 5: return new FollowerFragment();
-                case 6: return new FollowingFragment();
+                case 5: return FollowerFragment.newInstance(mUserUrl);
+                case 6: return FollowingFragment.newInstance(mUserUrl);
                 default: return new Fragment();
             }
         }

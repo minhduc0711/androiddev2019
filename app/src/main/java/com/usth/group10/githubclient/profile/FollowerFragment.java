@@ -34,17 +34,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FollowerFragment extends Fragment {
-
+    private static final String KEY_USER_URL = "user_url";
 
     private RecyclerView mFollowerRecycleView;
     private RecyclerView.Adapter mFollowerAdapter;
 
-
+    public static FollowerFragment newInstance(String userUrl) {
+        FollowerFragment followerFragment = new FollowerFragment();
+        Bundle args = new Bundle();
+        args.putString(KEY_USER_URL, userUrl);
+        followerFragment.setArguments(args);
+        return followerFragment;
+    }
 
     public FollowerFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,11 +68,9 @@ public class FollowerFragment extends Fragment {
     private  class FollowerAdapter extends RecyclerView.Adapter<FollowerViewHolder>{
         private ArrayList<Follower> mFollowerList;
 
-
         private FollowerAdapter(ArrayList<Follower> followerArrayList){
             mFollowerList = followerArrayList;
         }
-
 
         @NonNull
         @Override
@@ -80,7 +83,6 @@ public class FollowerFragment extends Fragment {
         public void onBindViewHolder(@NonNull FollowerViewHolder holder, int position) {
             holder.bind(mFollowerList.get(position));
         }
-
 
         @Override
         public int getItemCount() {
@@ -120,10 +122,7 @@ public class FollowerFragment extends Fragment {
         String access_token = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
                 .getString(MySingleton.KEY_ACCESS_TOKEN, "");
 
-
-
-
-        String url = "https://api.github.com/user/followers?access_token=" + access_token;
+        String url = getArguments().getString(KEY_USER_URL) + "/followers?access_token=" + access_token;
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -180,7 +179,6 @@ public class FollowerFragment extends Fragment {
         public String getmUserAvaterURL() {
             return mUserAvaterURL;
         }
-
 
         public String getmUserName() {
             return mUserName;
