@@ -140,7 +140,7 @@ public class RepoResultsFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), RepoActivity.class);
+                    Intent intent = RepoActivity.newIntent(getActivity(), repo.getRepoUrl());
                     startActivity(intent);
                 }
             });
