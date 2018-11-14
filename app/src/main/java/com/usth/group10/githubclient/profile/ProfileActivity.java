@@ -35,7 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_profile);
+        setContentView(R.layout.activity_profile);
 
         mToolbar = findViewById(R.id.toolbar_profile);
         mToolbar.setTitle(R.string.title_activity_profile);
