@@ -92,12 +92,11 @@ public class SearchableActivity extends AppCompatActivity {
     }
 
     private void performSearch(String query) {
-        String access_token = getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
-                .getString(MySingleton.KEY_ACCESS_TOKEN, "");
-        String url = "https://api.github.com/search/repositories?q=" + query;
+        String repoSearchUrl = "https://api.github.com/search/repositories?q=" + query;
+        String userSearchUrl = "https://api.github.com/search/users?q=" + query;
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest repoRequest = new JsonObjectRequest
+                (Request.Method.GET, repoSearchUrl, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -105,6 +104,7 @@ public class SearchableActivity extends AppCompatActivity {
                             switch (response.getInt("total_count")) {
                                 case 0:
                                     mPagerAdapter.replaceFragment(NothingHereFragment.newInstance("results"), 0);
+                                    break;
                                 default:
                                     mPagerAdapter.replaceFragment(
                                             RepoResultsFragment.newInstance(response.getJSONArray("items").toString()), 0);
@@ -122,9 +122,36 @@ public class SearchableActivity extends AppCompatActivity {
                     }
                 });
 
-        // Access the RequestQueue through your singleton class.
-        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+        JsonObjectRequest userRequest = new JsonObjectRequest
+                (Request.Method.GET, userSearchUrl, null, new Response.Listener<JSONObject>() {
 
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            switch (response.getInt("total_count")) {
+                                case 0:
+                                    mPagerAdapter.replaceFragment(NothingHereFragment.newInstance("results"), 1);
+                                    break;
+                                default:
+                                    mPagerAdapter.replaceFragment(
+                                            UserResultsFragment.newInstance(response.getJSONArray("items").toString()), 1);
+                            }
+                            mProgressBarLayout.setVisibility(View.GONE);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(SearchableActivity.this, "Error getting search results", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        // Access the RequestQueue through your singleton class.
+        MySingleton.getInstance(this).addToRequestQueue(repoRequest);
+        MySingleton.getInstance(this).addToRequestQueue(userRequest);
     }
 
     @Override

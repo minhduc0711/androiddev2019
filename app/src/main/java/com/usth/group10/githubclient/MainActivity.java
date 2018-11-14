@@ -169,13 +169,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (mNavigationView.getCheckedItem().getItemId() != R.id.item_drawer_home) {
-            mNavigationView.setCheckedItem(R.id.item_drawer_home);
-            mCurrentSelectedItemResId = R.id.item_drawer_home;
-            mMainToolbar.setTitle(R.string.app_name);
-            getSupportFragmentManager().beginTransaction().replace(R.id.layout_main, new HomeFragment()).commit();
-        } else {
-            finishAffinity();
-        }
+        finishAffinity();
     }
 }
