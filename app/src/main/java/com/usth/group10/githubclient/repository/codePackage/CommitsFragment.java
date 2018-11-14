@@ -1,4 +1,4 @@
-package com.usth.group10.githubclient.repository.CodePackage;
+package com.usth.group10.githubclient.repository.codePackage;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -114,7 +114,7 @@ public class CommitsFragment extends Fragment {
     private void updateCommitsList() {
         String username = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
                             .getString(MySingleton.KEY_USERNAME, "");
-        String url = "https://api.github.com/repos/wH1t3-l0tUs/androiddev2019/commits";
+        String url = "https://api.github.com/repos/" + username +"/androiddev2019/commits";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                     @Override
@@ -138,10 +138,11 @@ public class CommitsFragment extends Fragment {
 
     private ArrayList<CommitsFeed> processRawJson(JSONArray response){
         JSONObject currentItem;
-        ArrayList<CommitsFeed> commitsFeedsList = new ArrayList<>();String access_token = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
+        ArrayList<CommitsFeed> commitsFeedsList = new ArrayList<>();
+        String access_token = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
                 .getString(MySingleton.KEY_ACCESS_TOKEN, "");
 
-        String title, content, userAvatarUrl, time;
+        String title, userAvatarUrl, time;
         String username;
 
         for (int i = 0; i < response.length(); i++){
