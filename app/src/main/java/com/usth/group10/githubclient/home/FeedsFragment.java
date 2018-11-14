@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +27,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.squareup.picasso.Picasso;
-import com.usth.group10.githubclient.LoginActivity;
 import com.usth.group10.githubclient.R;
 import com.usth.group10.githubclient.others.MySingleton;
 
@@ -47,6 +48,7 @@ import java.util.Locale;
 public class FeedsFragment extends Fragment {
     private static final String TAG = "FeedsFragment";
 
+    private FrameLayout mProgressBarLayout;
     private RecyclerView mFeedsRecyclerView;
     private RecyclerView.Adapter mFeedsAdapter;
 
@@ -60,6 +62,9 @@ public class FeedsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_feeds, container, false);
+
+        mProgressBarLayout = view.findViewById(R.id.progress_bar_layout_feeds);
+        mProgressBarLayout.setVisibility(View.VISIBLE);
 
         mFeedsRecyclerView = view.findViewById(R.id.recycler_view_feeds);
         mFeedsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -101,8 +106,7 @@ public class FeedsFragment extends Fragment {
 
         private FeedsViewHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.item_feeds_list, parent, false));
-
-            mUserAvatar = itemView.findViewById(R.id.image_user_avatar_feeds);
+            mUserAvatar = itemView.findViewById(R.id.image_avatar_feeds);
             mTextViewTitle = itemView.findViewById(R.id.text_title_feeds);
             mTextViewTime = itemView.findViewById(R.id.text_time_feeds);
             mTextViewContent = itemView.findViewById(R.id.text_content_feeds);
@@ -127,6 +131,9 @@ public class FeedsFragment extends Fragment {
         String username = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
                             .getString(MySingleton.KEY_USERNAME, "");
         String url = "https://api.github.com/users/" + username + "/received_events?access_token=" + access_token;
+        Log.d(TAG, url);
+        Log.d(TAG, username);
+
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                     @Override
@@ -135,6 +142,7 @@ public class FeedsFragment extends Fragment {
                         
                         mFeedsAdapter = new FeedsAdapter(feedsList);
                         mFeedsRecyclerView.setAdapter(mFeedsAdapter);
+                        mProgressBarLayout.setVisibility(View.GONE);
                     }
                 }, new Response.ErrorListener() {
                     @Override

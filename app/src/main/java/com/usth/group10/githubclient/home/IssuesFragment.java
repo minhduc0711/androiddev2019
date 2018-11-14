@@ -41,7 +41,6 @@ public class IssuesFragment extends Fragment {
         mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(adapter);
 
-
         //set header for tab
         mTabLayout = view.findViewById(R.id.tab_layout_issues);
         mTabLayout.setupWithViewPager(mViewPager);
