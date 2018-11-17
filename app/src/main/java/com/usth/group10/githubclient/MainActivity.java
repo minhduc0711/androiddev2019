@@ -105,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.item_drawer_logout:
                             finish();
+                            SharedPreferences.Editor editor = getSharedPreferences(MySingleton.PREF_LOGIN_INFO, MODE_PRIVATE).edit();
+                            editor.clear().apply();
                             intent = LoginActivity.newIntent(MainActivity.this);
                             startActivity(intent);
                         default:
@@ -169,10 +171,5 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-    }
-
-    @Override
-    public void onBackPressed() {
-        finishAffinity();
     }
 }
