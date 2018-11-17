@@ -120,13 +120,15 @@ public class SearchableActivity extends AppCompatActivity {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        } finally {
+                            mProgressBarLayout.setVisibility(View.GONE);
                         }
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(SearchableActivity.this, "Error getting search results", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SearchableActivity.this, "Error getting repos", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -154,7 +156,7 @@ public class SearchableActivity extends AppCompatActivity {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(SearchableActivity.this, "Error getting search results", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SearchableActivity.this, "Error getting users", Toast.LENGTH_SHORT).show();
                     }
                 });
 
