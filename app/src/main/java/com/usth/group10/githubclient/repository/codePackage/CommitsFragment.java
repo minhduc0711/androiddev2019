@@ -201,7 +201,7 @@ public class CommitsFragment extends Fragment {
         }
         public String getTitle() { return mTitle; }
 
-        public  String getUserAvatarUrl() { return mUserAvatarUrl; }
+        public String getUserAvatarUrl() { return mUserAvatarUrl; }
 
         public String getUsername() { return mUsername; }
 

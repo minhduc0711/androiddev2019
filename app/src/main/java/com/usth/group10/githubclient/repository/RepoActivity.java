@@ -20,7 +20,9 @@ import com.usth.group10.githubclient.R;
 
 public class RepoActivity extends AppCompatActivity {
     private static final String TAG = "RepoActivity";
-    private static final String KEY_REPO_URL = "repo_url";
+    public static final String KEY_REPO_URL = "repo_url";
+
+    private String mRepoUrl;
 
     private ImageButton popupButton;
     private ImageButton backButton;
@@ -37,8 +39,10 @@ public class RepoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repo);
 
+        mRepoUrl = getIntent().getStringExtra(KEY_REPO_URL);
+
         mBottomNavigationView = findViewById(R.id.bottom_nav_repo);
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new CodeFragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, CodeFragment.newInstance(mRepoUrl)).commit();
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -46,7 +50,7 @@ public class RepoActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.item_bottom_nav_repo_code:
                         Log.d(TAG, "Fragment for feeds created");
-                        newFragment = new CodeFragment();
+                        newFragment = CodeFragment.newInstance(mRepoUrl);
                         break;
                     case R.id.item_bottom_nav_repo_issues:
                         newFragment = new IssuesRepoFragment();
@@ -103,7 +107,5 @@ public class RepoActivity extends AppCompatActivity {
                 popupMenu.show();
             }
         });
-
     }
-
 }
