@@ -84,7 +84,7 @@ public class ProfileActivity extends AppCompatActivity {
             // returns an instance of Fragment corresponding to the specified page
             switch (page) {
                 case 0: return OverviewProfileFragment.newInstance(mUserUrl);
-                case 1: return new FeedsFragment();
+                case 1: return FeedProfileFragment.newInstance(mUserUrl);
                 case 2: return RepositoriesFragment.newInstance(mUserUrl);
                 case 3: return NothingHereFragment.newInstance(titles[page]);
                 case 4: return NothingHereFragment.newInstance(titles[page]);

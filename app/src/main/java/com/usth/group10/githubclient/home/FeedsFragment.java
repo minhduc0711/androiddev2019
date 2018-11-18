@@ -223,7 +223,6 @@ public class FeedsFragment extends Fragment {
                 userUrl = currentItem.getJSONObject("actor").getString("url");
                 repoUrl = currentItem.getJSONObject("repo").getString("url");
                 time = currentItem.getString("created_at");
-
                 feedsList.add(new Feed(title, spannedTitle, content, userAvatarUrl, userUrl, repoUrl, time));
 
             } catch (JSONException e) {
