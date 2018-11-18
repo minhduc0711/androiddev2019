@@ -1,12 +1,14 @@
 package com.usth.group10.githubclient.repository.codePackage;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -43,6 +46,7 @@ public class FileExplorerFragment extends Fragment {
     private Stack<String> mContentUrlStack = new Stack<>();
     private String mCurrentContentUrl;
 
+    private FrameLayout mProgressBarLayout;
     private RecyclerView mRecyclerView;
     private ContentAdapter mContentAdapter;
 
@@ -84,6 +88,8 @@ public class FileExplorerFragment extends Fragment {
                 return false;
             }
         });
+
+        mProgressBarLayout = view.findViewById(R.id.progress_bar_layout_file_explorer);
 
         mRecyclerView = view.findViewById(R.id.recycler_view_file_explorer);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -140,7 +146,8 @@ public class FileExplorerFragment extends Fragment {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getActivity(), "This is a file", Toast.LENGTH_SHORT).show();
+                        Intent intent = FileContentActivity.newIntent(getActivity(), content.getName(), content.getUrl());
+                        startActivity(intent);
                     }
                 });
             } else {
@@ -159,6 +166,7 @@ public class FileExplorerFragment extends Fragment {
     }
 
     private void fetchContentList(String url) {
+        mProgressBarLayout.setVisibility(View.VISIBLE);
         mCurrentContentUrl = url;
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
@@ -169,11 +177,13 @@ public class FileExplorerFragment extends Fragment {
                         mContentAdapter.getContentList().clear();
                         mContentAdapter.getContentList().addAll(contentList);
                         mContentAdapter.notifyDataSetChanged();
+                        mProgressBarLayout.setVisibility(View.GONE);
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getActivity(), "Loading file explorer failed", Toast.LENGTH_SHORT).show();
+                        mProgressBarLayout.setVisibility(View.GONE);
                     }
                 });
         MySingleton.getInstance(getActivity()).addToRequestQueue(jsonArrayRequest);

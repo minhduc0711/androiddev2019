@@ -32,7 +32,8 @@
                     android:scheme="githublite" />
             </intent-filter>
         </activity>
-        <activity android:name=".search.SearchableActivity"
+        <activity
+            android:name=".search.SearchableActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -42,7 +43,8 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".profile.ProfileActivity"></activity>
+        <activity android:name=".profile.ProfileActivity" />
+        <activity android:name=".repository.codePackage.FileContentActivity"></activity>
     </application>
 
 </manifest>
