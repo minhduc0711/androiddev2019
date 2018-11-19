@@ -33,11 +33,20 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import androidx.fragment.app.Fragment;
 
 public class ContributorsFragment extends Fragment {
+    private static final String KEY_REPO_URL = "repo_url";
 
     private FrameLayout mProgressBarLayout;
     private RecyclerView mContributorsRecyclerView;
     private RecyclerView.Adapter mContributorsApdapter;
 
+    public static ContributorsFragment newInstance(String repoUrl) {
+        ContributorsFragment ContributorsFragment = new ContributorsFragment();
+        Bundle args = new Bundle();
+        args.putString(KEY_REPO_URL, repoUrl);
+        ContributorsFragment.setArguments(args);
+        return ContributorsFragment;
+    }
+    
     public ContributorsFragment() {
         // Required empty public constructor
     }
@@ -107,22 +116,11 @@ public class ContributorsFragment extends Fragment {
                         startActivity(intent);
                 }
             });
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = RepoActivity.newIntent(getActivity(), contributors.getUserUrl());
-                    startActivity(intent);
-                }
-            });
-
         }
     }
 
     private void updateContributorsList(){
-        String username = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
-                .getString(MySingleton.KEY_USERNAME,"");
-        String url = "https://api.github.com/repos/" + username + "/androiddev2019/contributors";
+        String url = getArguments().getString(KEY_REPO_URL) + "/contributors";
         // url = repoURL + "contributor"
         // need to changed later
 
@@ -148,9 +146,7 @@ public class ContributorsFragment extends Fragment {
     private ArrayList<Contributors> processRawJson(JSONArray response){
         JSONObject currentItem;
         ArrayList<Contributors> contributorsList = new ArrayList<>();
-        String acess_token = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
-                .getString(MySingleton.KEY_ACCESS_TOKEN,"");
-        String title, userAvatarUrl, commits, userUrl, username;
+        String title, userAvatarUrl, commits, userUrl;
 
         for (int i = 0; i < response.length(); i++){
             try{
@@ -159,9 +155,8 @@ public class ContributorsFragment extends Fragment {
                 userAvatarUrl = currentItem.getString("avatar_url");
                 commits = "commits (" + currentItem.getString("contributions") + ")";
                 userUrl = currentItem.getString("url");
-                username = currentItem.getString("login");
 
-                contributorsList.add(new Contributors(title, userAvatarUrl, username, commits, userUrl));
+                contributorsList.add(new Contributors(title, userAvatarUrl, commits, userUrl));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -173,10 +168,9 @@ public class ContributorsFragment extends Fragment {
         private String mTitle;
         private String mCommits;
         private String mUserAvatarUrl;
-        private  String mUsername;
         private String mUserUrl;
 
-        private Contributors(String title, String userAvatarUrl, String username, String commits, String userUrl){
+        private Contributors(String title, String userAvatarUrl, String commits, String userUrl){
             mTitle = title;
             mUserAvatarUrl = userAvatarUrl;
             mCommits = commits;
@@ -186,8 +180,6 @@ public class ContributorsFragment extends Fragment {
         public String getmTitle() { return mTitle; }
 
         public String getmUserAvatarUrl() { return mUserAvatarUrl; }
-
-        public String getUsername() { return mUsername; }
 
         public String getmCommits() { return mCommits; }
 
