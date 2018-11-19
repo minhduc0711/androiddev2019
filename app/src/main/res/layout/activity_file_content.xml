@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".repository.codePackage.FileContentActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_file_content"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primaryColor"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+
+    <FrameLayout
+        android:id="@+id/progress_bar_layout_file_content"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="4dp">
+
+        <ProgressBar
+            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:indeterminate="true" />
+
+    </FrameLayout>
+
+    <br.tiagohm.codeview.CodeView
+        android:id="@+id/code_view_file_content_activity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cv_font_size="12"
+        app:cv_show_line_number="true"
+        app:cv_start_line_number="1"
+        app:cv_wrap_line="true"
+        app:cv_zoom_enable="true">
+    </br.tiagohm.codeview.CodeView>
+
+</LinearLayout>

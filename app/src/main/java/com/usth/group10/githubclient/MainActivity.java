@@ -8,6 +8,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.Picasso;
+import com.usth.group10.githubclient.home.FeedsFragment;
 import com.usth.group10.githubclient.home.HomeFragment;
 import com.usth.group10.githubclient.others.MySingleton;
 import com.usth.group10.githubclient.profile.ProfileActivity;
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         mNavigationView.setCheckedItem(R.id.item_drawer_home);
         mCurrentSelectedItemResId = R.id.item_drawer_home;
-        getSupportFragmentManager().beginTransaction().replace(R.id.layout_main, new HomeFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.layout_main, new FeedsFragment()).commit();
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.item_drawer_home:
                             Log.d(TAG, "Home fragment created");
                             mCurrentSelectedItemResId = menuItem.getItemId();
-                            getSupportFragmentManager().beginTransaction().replace(R.id.layout_main, new HomeFragment()).commit();
+                            getSupportFragmentManager().beginTransaction().replace(R.id.layout_main, new FeedsFragment()).commit();
                             mMainToolbar.setTitle(R.string.app_name);
                             break;
                         case R.id.item_drawer_profile:
@@ -105,6 +106,8 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.item_drawer_logout:
                             finish();
+                            SharedPreferences.Editor editor = getSharedPreferences(MySingleton.PREF_LOGIN_INFO, MODE_PRIVATE).edit();
+                            editor.clear().apply();
                             intent = LoginActivity.newIntent(MainActivity.this);
                             startActivity(intent);
                         default:
@@ -169,10 +172,5 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-    }
-
-    @Override
-    public void onBackPressed() {
-        finishAffinity();
     }
 }

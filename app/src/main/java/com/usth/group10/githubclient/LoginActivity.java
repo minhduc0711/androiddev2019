@@ -12,11 +12,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.usth.group10.githubclient.others.MySingleton;
 
 import java.util.HashMap;
@@ -38,6 +36,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        String access_token = getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
+                .getString(MySingleton.KEY_ACCESS_TOKEN, "");
+        if (!access_token.equals("")) {
+            finish();
+            Intent intent = MainActivity.newIntent(this);
+            startActivity(intent);
+        }
+
         mLoginButton = findViewById(R.id.button_login);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                                                         "?client_id=" + clientId +
                                                         "&scope=repo%20user" +
                                                         "&redirect_uri=" + redirectUri));
+                finish();
                 startActivity(intent);
             }
         });

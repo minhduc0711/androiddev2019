@@ -45,6 +45,8 @@
         </activity>
         <activity android:name=".profile.ProfileActivity" />
         <activity android:name=".repository.icons.ShowUserList" />
+        <activity android:name=".repository.codePackage.FileContentActivity"></activity>
+
     </application>
 
 </manifest>

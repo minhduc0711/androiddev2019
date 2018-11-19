@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".repository.codePackage.FileExplorerFragment">
+
+    <FrameLayout
+        android:id="@+id/progress_bar_layout_file_explorer"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="4dp">
+
+        <ProgressBar
+            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:indeterminate="true" />
+
+    </FrameLayout>
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/spinner_branches"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_file_explorer"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

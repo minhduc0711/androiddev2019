@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -66,6 +67,13 @@ public class UserResultsFragment extends Fragment {
             ArrayList<User> userList = processJsonArray(jsonArray);
             mUserAdapter = new UserAdapter(userList);
             mRecyclerView.setAdapter(mUserAdapter);
+            RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(getActivity()) {
+                @Override protected int getVerticalSnapPreference() {
+                    return LinearSmoothScroller.SNAP_TO_START;
+                }
+            };
+            smoothScroller.setTargetPosition(0);
+            mRecyclerView.getLayoutManager().startSmoothScroll(smoothScroller);
         } catch (JSONException e) {
             e.printStackTrace();
         }

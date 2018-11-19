@@ -42,7 +42,10 @@ public class RepoActivity extends AppCompatActivity implements TransmitDataDialo
     private static final String TAG = "RepoActivity";
     public static final String KEY_REPO_URL = "repo_url";
 
+
     int starredCount, subscriberCount, forkedCount;
+
+    private String mRepoUrl;
 
     private ImageButton popupButton;
     private ImageButton backButton;
@@ -75,15 +78,17 @@ public class RepoActivity extends AppCompatActivity implements TransmitDataDialo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repo);
 
+        mRepoUrl = getIntent().getStringExtra(KEY_REPO_URL);
+
         mBottomNavigationView = findViewById(R.id.bottom_nav_repo);
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new CodeFragment()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, CodeFragment.newInstance(mRepoUrl)).commit();
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 Fragment newFragment;
                 switch (menuItem.getItemId()) {
                     case R.id.item_bottom_nav_repo_code:
-                        newFragment = new CodeFragment();
+                        newFragment = CodeFragment.newInstance(mRepoUrl);
                         break;
                     case R.id.item_bottom_nav_repo_issues:
                         newFragment = new IssuesRepoFragment();
@@ -269,10 +274,6 @@ public class RepoActivity extends AppCompatActivity implements TransmitDataDialo
                 popupMenu.show();
             }
         });
-
-
-
-
     }
 
 //For FORK
@@ -333,7 +334,6 @@ public class RepoActivity extends AppCompatActivity implements TransmitDataDialo
         }
     }
 
-
-
+    }
 
 }

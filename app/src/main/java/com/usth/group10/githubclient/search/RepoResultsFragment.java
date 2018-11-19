@@ -35,6 +35,7 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -79,6 +80,13 @@ public class RepoResultsFragment extends Fragment {
             ArrayList<Repo> repoList = processJsonArray(jsonArray);
             mRepoAdapter = new RepoAdapter(repoList);
             mRecyclerView.setAdapter(mRepoAdapter);
+            RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(getActivity()) {
+                @Override protected int getVerticalSnapPreference() {
+                    return LinearSmoothScroller.SNAP_TO_START;
+                }
+            };
+            smoothScroller.setTargetPosition(0);
+            mRecyclerView.getLayoutManager().startSmoothScroll(smoothScroller);
         } catch (JSONException e) {
             e.printStackTrace();
         }
