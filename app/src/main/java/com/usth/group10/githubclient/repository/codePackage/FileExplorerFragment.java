@@ -102,7 +102,6 @@ public class FileExplorerFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedBranch = (String) parent.getItemAtPosition(position);
                 fetchContentList(mRepoUrl + "/contents?ref=" + selectedBranch);
-                Toast.makeText(getActivity(), selectedBranch, Toast.LENGTH_SHORT).show();
             }
 
             @Override
