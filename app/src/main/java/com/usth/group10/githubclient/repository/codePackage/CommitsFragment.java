@@ -42,11 +42,19 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CommitsFragment extends Fragment {
     private static final String TAG = "CommitsFragment";
+    private static final String KEY_REPO_URL = "repo_url";
 
     private FrameLayout mProgressBarLayout;
     private RecyclerView mCommitsRecyclerView;
     private RecyclerView.Adapter mCommitsAdapter;
 
+    public static CommitsFragment newInstance(String repoUrl) {
+        CommitsFragment CommitsFragment = new CommitsFragment();
+        Bundle args = new Bundle();
+        args.putString(KEY_REPO_URL, repoUrl);
+        CommitsFragment.setArguments(args);
+        return CommitsFragment;
+    }
 
     public CommitsFragment() {
         // Required empty public constructor
@@ -122,20 +130,11 @@ public class CommitsFragment extends Fragment {
                             startActivity(intent);
                 }
             });
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = RepoActivity.newIntent(getActivity(), commitsFeed.getUserUrl());
-                    startActivity(intent);
-                }
-            });
         }
     }
 
     private void updateCommitsList() {
-        String username = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
-                            .getString(MySingleton.KEY_USERNAME, "");
-        String url = "https://api.github.com/repos/" + username +"/androiddev2019/commits";
+        String url = getArguments().getString(KEY_REPO_URL) + "/commits";
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
                     @Override
@@ -161,8 +160,6 @@ public class CommitsFragment extends Fragment {
     private ArrayList<CommitsFeed> processRawJson(JSONArray response){
         JSONObject currentItem;
         ArrayList<CommitsFeed> commitsFeedsList = new ArrayList<>();
-        String access_token = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
-                .getString(MySingleton.KEY_ACCESS_TOKEN, "");
 
         String title, userAvatarUrl, time;
         String username, userUrl;
@@ -197,6 +194,7 @@ public class CommitsFragment extends Fragment {
             mTitle = title;
             mUsername = username;
             mUserAvatarUrl = userAvatarUrl;
+            mUserUrl = userUrl;
             setTime(time);
         }
         public String getTitle() { return mTitle; }

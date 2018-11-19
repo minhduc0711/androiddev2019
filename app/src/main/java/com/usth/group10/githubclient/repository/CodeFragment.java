@@ -16,6 +16,7 @@ import com.usth.group10.githubclient.R;
 import com.usth.group10.githubclient.repository.codePackage.CommitsFragment;
 import com.usth.group10.githubclient.repository.codePackage.ContributorsFragment;
 import com.usth.group10.githubclient.repository.codePackage.FileExplorerFragment;
+import com.usth.group10.githubclient.repository.codePackage.ReadmeFragment;
 
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
@@ -81,11 +82,11 @@ public class CodeFragment extends Fragment {
         public androidx.fragment.app.Fragment getItem(int page) {
             // returns an instance of Fragment corresponding to the specified page
             switch (page) {
-                case 0: return NothingHereFragment.newInstance("issues");
+                case 0: return ReadmeFragment.newInstance(mRepoUrl);
                 case 1: return FileExplorerFragment.newInstance(mRepoUrl);
-                case 2: return new CommitsFragment();
+                case 2: return CommitsFragment.newInstance(mRepoUrl);
                 case 3: return NothingHereFragment.newInstance("issues");
-                case 4: return new ContributorsFragment();
+                case 4: return ContributorsFragment.newInstance(mRepoUrl);
                 default: return new androidx.fragment.app.Fragment();
             }
         }
