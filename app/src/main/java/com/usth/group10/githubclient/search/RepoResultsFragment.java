@@ -237,7 +237,7 @@ public class RepoResultsFragment extends Fragment {
             for (int i = 0; i < builder.length(); i++) {
                 if (Character.toString(builder.charAt(i)).equals("*")) {
                     drawable = getResources().getDrawable(iconIds[iconIndex]);
-                    drawable.setBounds(0, 0, 14, 14);
+                    drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
                     builder.setSpan(new ImageSpan(drawable), i, i + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     i++;
                     iconIndex++;
