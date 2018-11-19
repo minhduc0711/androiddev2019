@@ -8,6 +8,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.usth.group10.githubclient.R;
 import com.usth.group10.githubclient.others.MySingleton;
 
@@ -24,13 +27,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Stack;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,10 +46,12 @@ public class FileExplorerFragment extends Fragment {
     private static final String TAG = "FileExplorerFragment";
 
     private String mRepoUrl;
+    private String mDefaultBranch;
     private Stack<String> mContentUrlStack = new Stack<>();
     private String mCurrentContentUrl;
 
     private FrameLayout mProgressBarLayout;
+    private AppCompatSpinner mBranchesSpinner;
     private RecyclerView mRecyclerView;
     private ContentAdapter mContentAdapter;
 
@@ -91,12 +96,27 @@ public class FileExplorerFragment extends Fragment {
 
         mProgressBarLayout = view.findViewById(R.id.progress_bar_layout_file_explorer);
 
+        mBranchesSpinner = view.findViewById(R.id.spinner_branches);
+        mBranchesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedBranch = (String) parent.getItemAtPosition(position);
+                fetchContentList(mRepoUrl + "/contents?ref=" + selectedBranch);
+                Toast.makeText(getActivity(), selectedBranch, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Toast.makeText(getActivity(), "Nothing selected", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         mRecyclerView = view.findViewById(R.id.recycler_view_file_explorer);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mContentAdapter = new ContentAdapter(new ArrayList<Content>());
         mRecyclerView.setAdapter(mContentAdapter);
 
-        fetchContentList(mRepoUrl + "/contents");
+        fetchDefaultBranch();
 
         return view;
     }
@@ -165,7 +185,59 @@ public class FileExplorerFragment extends Fragment {
         }
     }
 
+    private void fetchDefaultBranch() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, mRepoUrl, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            mDefaultBranch = response.getString("default_branch");
+                            fetchBranches();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), "Fetching default branch failed", Toast.LENGTH_SHORT).show();
+                        mProgressBarLayout.setVisibility(View.GONE);
+                    }
+                });
+        MySingleton.getInstance(getActivity()).addToRequestQueue(jsonObjectRequest);
+    }
+
+    private void fetchBranches() {
+        String branchesUrl = mRepoUrl + "/branches";
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest
+                (Request.Method.GET, branchesUrl, null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        ArrayList<String> branches = new ArrayList<>();
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                branches.add(response.getJSONObject(i).getString("name"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        ArrayAdapter<String> branchAdapter = new ArrayAdapter<>(getActivity(),
+                                android.R.layout.simple_spinner_dropdown_item, branches);
+                        branchAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mBranchesSpinner.setAdapter(branchAdapter);
+                        mBranchesSpinner.setSelection(branchAdapter.getPosition(mDefaultBranch));
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(), "Loading branches failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        MySingleton.getInstance(getActivity()).addToRequestQueue(jsonArrayRequest);
+    }
+
     private void fetchContentList(String url) {
+        Log.d(TAG, url);
         mProgressBarLayout.setVisibility(View.VISIBLE);
         mCurrentContentUrl = url;
 
