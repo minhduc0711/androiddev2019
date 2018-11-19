@@ -102,7 +102,7 @@
 
                 <!-- EYE button-->
                 <LinearLayout
-                    android:id="@+id/views_button"
+                    android:id="@+id/subscriber_button"
                     android:orientation="vertical"
                     android:weightSum="2"
                     android:layout_width="0dp"
@@ -110,19 +110,22 @@
                     android:layout_weight="1">
 
                     <ImageButton
-                        android:id="@+id/views_symbol"
-                        android:paddingTop="10dp"
-                        android:src="@drawable/ic_menu_eye"
+                        android:id="@+id/subscriber_symbol"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_repo_eye"
+                        android:clickable="false"
+                        android:duplicateParentState="true"
                         android:tint="@color/black"
-                        android:background="@color/white"
-                        android:layout_width="match_parent"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_weight="1"/>
 
                     <TextView
-                        android:id="@+id/number_of_views"
-                        android:paddingTop="3dp"
-                        android:paddingLeft="14dp"
+                        android:id="@+id/number_of_subscribers"
+                        android:gravity="center"
+                        android:clickable="false"
+                        android:duplicateParentState="true"
                         android:text="0"
                         android:textSize="15dp"
                         android:layout_width="match_parent"
@@ -133,7 +136,7 @@
 
                 <!-- STAR -->
                 <LinearLayout
-                    android:id="@+id/stars_button"
+                    android:id="@+id/starred_button"
                     android:orientation="vertical"
                     android:weightSum="2"
                     android:layout_width="0dp"
@@ -142,19 +145,20 @@
 
                     <ImageButton
                         android:id="@+id/stars_symbol"
-                        android:paddingTop="10dp"
-                        android:src="@drawable/ic_menu_star"
+                        android:clickable="false"
+                        android:duplicateParentState="true"
+                        android:layout_gravity="center"
                         android:tint="@color/black"
-                        android:background="@color/white"
-                        android:layout_width="match_parent"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:layout_width="wrap_content"
                         android:layout_height="0dp"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1" />
 
                     <TextView
-                        android:id="@+id/number_of_star"
-                        android:paddingTop="3dp"
-                        android:paddingLeft="14dp"
-                        android:text="0"
+                        android:id="@+id/number_of_stars"
+                        android:clickable="false"
+                        android:duplicateParentState="true"
+                        android:gravity="center"
                         android:textSize="15dp"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
@@ -164,7 +168,7 @@
 
                 <!-- FORK -->
                 <LinearLayout
-                    android:id="@+id/fork_button"
+                    android:id="@+id/forked_button"
                     android:orientation="vertical"
                     android:weightSum="2"
                     android:layout_width="0dp"
@@ -172,19 +176,23 @@
                     android:layout_weight="1">
 
                     <ImageButton
-                        android:id="@+id/fork_symbol"
-                        android:paddingTop="10dp"
-                        android:src="@drawable/ic_menu_fork"
+                        android:id="@+id/forked_symbol"
+                        android:layout_gravity="center"
+
+                        android:clickable="false"
+                        android:duplicateParentState="true"
+                        android:src="@drawable/ic_repo_forked"
                         android:tint="@color/black"
-                        android:background="@color/white"
-                        android:layout_width="match_parent"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_weight="1"/>
 
                     <TextView
-                        android:id="@+id/number_of_fork"
-                        android:paddingTop="3dp"
-                        android:paddingLeft="14dp"
+                        android:id="@+id/number_of_forks"
+                        android:clickable="false"
+                        android:duplicateParentState="true"
+                        android:gravity="center"
                         android:text="0"
                         android:textSize="15dp"
                         android:layout_width="match_parent"
@@ -204,20 +212,19 @@
 
                     <ImageButton
                         android:id="@+id/wiki_symbol"
-                        android:paddingTop="10dp"
-                        android:src="@drawable/ic_menu_wiki"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_repo_wiki"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
                         android:tint="@color/black"
-                        android:background="@color/white"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_weight="1"/>
 
                     <TextView
                         android:id="@+id/wiki"
-                        android:paddingTop="3dp"
-                        android:paddingLeft="5dp"
+                        android:gravity="center"
                         android:text="Wiki"
-                        android:textSize="15dp"
+                        android:textSize="15sp"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"/>
@@ -228,6 +235,7 @@
                 <LinearLayout
 
                     android:id="@+id/pin_button"
+                    android:layout_marginLeft="3dp"
                     android:orientation="vertical"
                     android:weightSum="2"
                     android:layout_width="0dp"
@@ -236,18 +244,21 @@
 
                     <ImageButton
                         android:id="@+id/pin_symbol"
-                        android:paddingTop="10dp"
-                        android:src="@drawable/ic_menu_pin"
+                        android:clickable="false"
+                        android:duplicateParentState="true"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_repo_pin"
                         android:tint="@color/black"
-                        android:background="@color/white"
-                        android:layout_width="match_parent"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_weight="1"/>
 
                     <TextView
                         android:id="@+id/pin"
-                        android:paddingTop="3dp"
-                        android:paddingLeft="9dp"
+                        android:clickable="false"
+                        android:duplicateParentState="true"
+                        android:gravity="center"
                         android:text="Pin"
                         android:textSize="15dp"
                         android:layout_width="match_parent"
@@ -299,5 +310,7 @@
         android:layout_weight="1"
         android:layout_gravity="bottom"
         app:menu="@menu/bottom_nav_repo" />
+
+
 
 </LinearLayout>
