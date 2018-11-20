@@ -5,11 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".repository.codePackage.ReadmeFragment">
 
-    <org.sufficientlysecure.htmltextview.HtmlTextView
+    <WebView
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/readmeContent"
-        android:scrollbars="vertical"/>
+        android:id="@+id/readmeContent">
+    </WebView>
 
 
 </LinearLayout>
