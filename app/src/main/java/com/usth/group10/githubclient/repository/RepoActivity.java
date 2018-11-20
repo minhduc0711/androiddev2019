@@ -333,7 +333,6 @@ public class RepoActivity extends AppCompatActivity implements TransmitDataDialo
             }
         }
     }
-
-    }
-
 }
+
+

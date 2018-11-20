@@ -37,7 +37,7 @@ public class FollowerFragment extends Fragment {
     private static final String KEY_USER_URL = "user_url";
 
     private RecyclerView mFollowerRecycleView;
-    private RecyclerView.Adapter mFollowerAdapter;
+    private FollowerAdapter mFollowerAdapter;
 
     public static FollowerFragment newInstance(String userUrl) {
         FollowerFragment followerFragment = new FollowerFragment();
@@ -60,6 +60,9 @@ public class FollowerFragment extends Fragment {
         mFollowerRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
+        ArrayList<Follower> followerList = new ArrayList<>();
+        mFollowerAdapter = new FollowerAdapter(followerList);
+        mFollowerRecycleView.setAdapter(mFollowerAdapter);
         updateFollowerList();
         return  v;
 
@@ -70,6 +73,10 @@ public class FollowerFragment extends Fragment {
 
         private FollowerAdapter(ArrayList<Follower> followerArrayList){
             mFollowerList = followerArrayList;
+        }
+
+        public ArrayList<Follower> getFollowerList() {
+            return mFollowerList;
         }
 
         @NonNull
@@ -112,6 +119,13 @@ public class FollowerFragment extends Fragment {
                     startActivity(intent);
                 }
             });
+            mTextViewName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = ProfileActivity.newIntent(getActivity(),follower.getmUserURL());
+                    startActivity(intent);
+                }
+            });
         }
 
     }
@@ -129,8 +143,9 @@ public class FollowerFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         ArrayList<Follower> followersList = processRawJson(response);
-                        mFollowerAdapter = new FollowerAdapter(followersList);
-                        mFollowerRecycleView.setAdapter(mFollowerAdapter);
+                        mFollowerAdapter.getFollowerList().clear();
+                        mFollowerAdapter.getFollowerList().addAll(followersList);
+                        mFollowerAdapter.notifyDataSetChanged();
 
                     }
                 }, new Response.ErrorListener() {
@@ -188,6 +203,7 @@ public class FollowerFragment extends Fragment {
             return mUserURL;
         }
     }
+
 
 
 }

@@ -34,7 +34,7 @@ public class FollowingFragment extends Fragment {
     private static final String KEY_USER_URL = "user_url";
 
     private RecyclerView mFollowingRecycleView;
-    private RecyclerView.Adapter mFollowingAdapter;
+    private FollowingAdapter mFollowingAdapter;
 
     public static FollowingFragment newInstance(String userUrl) {
         FollowingFragment followingFragment = new FollowingFragment();
@@ -56,6 +56,9 @@ public class FollowingFragment extends Fragment {
         mFollowingRecycleView = view.findViewById(R.id.recycler_view_feeds);
         mFollowingRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        ArrayList<Following> followingList = new ArrayList<>();
+        mFollowingAdapter = new FollowingAdapter(followingList);
+        mFollowingRecycleView.setAdapter(mFollowingAdapter);
         updateFollowingList();
         return  view;
     }
@@ -65,6 +68,10 @@ public class FollowingFragment extends Fragment {
 
         private FollowingAdapter(ArrayList<Following> followingArrayList){
             mFollowingList = followingArrayList;
+        }
+
+        public ArrayList<Following> getFollowingList() {
+            return mFollowingList;
         }
 
         @NonNull
@@ -106,6 +113,13 @@ public class FollowingFragment extends Fragment {
                     startActivity(intent);
                 }
             });
+            mTextViewName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = ProfileActivity.newIntent(getActivity(),following.mUserURL);
+                    startActivity(intent);
+                }
+            });
         }
 
     }
@@ -120,8 +134,9 @@ public class FollowingFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         ArrayList<Following> followingList = processRawJson(response);
-                        mFollowingAdapter = new FollowingAdapter(followingList);
-                        mFollowingRecycleView.setAdapter(mFollowingAdapter);
+                        mFollowingAdapter.getFollowingList().clear();
+                        mFollowingAdapter.getFollowingList().addAll(followingList);
+                        mFollowingAdapter.notifyDataSetChanged();
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -138,7 +153,6 @@ public class FollowingFragment extends Fragment {
         private ArrayList<FollowingFragment.Following> processRawJson(JSONArray response){
         JSONObject currentItem;
         ArrayList<FollowingFragment.Following> followingsList = new ArrayList<>();
-
         String name, userAvatarURL, userURL;
         for (int i = 0; i < response.length(); i++) {
             try {
@@ -181,11 +195,4 @@ public class FollowingFragment extends Fragment {
             return mUserURL;
         }
     }
-
-
-
-
-
-
-
 }
