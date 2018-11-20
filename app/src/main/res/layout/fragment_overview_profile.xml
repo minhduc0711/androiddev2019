@@ -108,11 +108,22 @@
                 />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_following"
+            android:layout_width="wrap_content"
+            android:background="@color/primaryColor"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/linear_body"
+            android:layout_centerHorizontal="true"
+            tools:text="@string/button_profile_following"
+            />
         <LinearLayout
             android:id="@+id/linear_footer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/linear_body"
+            android:layout_below="@+id/btn_following"
             android:orientation="vertical"
             android:layout_alignParentRight="true"
             android:layout_alignParentLeft="true"

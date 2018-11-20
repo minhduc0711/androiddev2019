@@ -357,7 +357,7 @@ public class RepoActivity extends AppCompatActivity implements TransmitDataDialo
             }
         }
     }
-
+    
     private void fetchRepoInfo() {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, mRepoUrl, null, new Response.Listener<JSONObject>() {

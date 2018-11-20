@@ -128,8 +128,10 @@ public class FeedProfileFragment extends androidx.fragment.app.Fragment {
             }else if (feed.getType().equals("ForkEvent")){
                 mTextViewBody.setVisibility(View.GONE);
                 mImageViewIcon.setImageResource(R.drawable.ic_git_commit);
+            }else if (feed.getType().equals("WatchEvent")){
+                mTextViewBody.setVisibility(View.GONE);
+                mImageViewIcon.setImageResource(R.drawable.ic_menu_star_full_color);
             }
-
             mTextViewTime.setText(feed.getTime());
         }
     }
@@ -176,7 +178,6 @@ public class FeedProfileFragment extends androidx.fragment.app.Fragment {
                 username = currentItem.getJSONObject("actor").getString("login");
                 repoName = currentItem.getJSONObject("repo").getString("name");
                 type = currentItem.getString("type");
-                Log.d(TAG, type);
 
                 switch (type) {
                     case "PushEvent":
@@ -185,7 +186,6 @@ public class FeedProfileFragment extends androidx.fragment.app.Fragment {
                         message = currentItem.getJSONObject("payload").getJSONArray("commits").getJSONObject(0).getString("message");
                         size = currentItem.getJSONObject("payload").getInt("size");
                         body = sha.substring(0,6) + " " + message;
-                        System.out.println(size);
                         break;
                     case "ForkEvent":
                         action = " forked ";
@@ -194,6 +194,9 @@ public class FeedProfileFragment extends androidx.fragment.app.Fragment {
                         action = " opened pull request ";
                         repoName += "#" + currentItem.getJSONObject("payload").getInt("number") ;
                         body = currentItem.getJSONObject("payload").getJSONObject("pull_request").getString("title");
+                        break;
+                    case "WatchEvent":
+                        action = " starred ";
                         break;
                     default:
                         action = " is confused ";
