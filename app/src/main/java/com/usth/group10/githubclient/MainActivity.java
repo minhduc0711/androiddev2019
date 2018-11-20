@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
         mMainToolbar = findViewById(R.id.toolbar_main);
+        mMainToolbar.setTitle(R.string.title_fragment_feeds);
         setSupportActionBar(mMainToolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -92,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.item_drawer_home:
                             mCurrentSelectedItemResId = menuItem.getItemId();
                             getSupportFragmentManager().beginTransaction().replace(R.id.layout_main, new FeedsFragment()).commit();
-                            mMainToolbar.setTitle(R.string.title_fragment_feeds);
                             break;
                         case R.id.item_drawer_profile:
                             intent = ProfileActivity.newIntent(MainActivity.this, mAuthenticatedUserUrl);

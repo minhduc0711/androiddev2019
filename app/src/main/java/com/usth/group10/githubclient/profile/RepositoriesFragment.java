@@ -1,6 +1,7 @@
 package com.usth.group10.githubclient.profile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.usth.group10.githubclient.R;
 import com.usth.group10.githubclient.home.FeedsFragment;
 import com.usth.group10.githubclient.others.MySingleton;
 import com.usth.group10.githubclient.others.NothingHereFragment;
+import com.usth.group10.githubclient.repository.RepoActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,11 +35,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 public class RepositoriesFragment extends androidx.fragment.app.Fragment {
     private static final String KEY_USER_URL = "user_url";
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRepositoriesRecycleView;
     private RecyclerView.Adapter mRepositoriesAdapter;
 
@@ -61,6 +65,14 @@ public class RepositoriesFragment extends androidx.fragment.app.Fragment {
         mRepositoriesRecycleView = view.findViewById(R.id.recycler_view_feeds);
         mRepositoriesRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout_feeds);
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.primaryColor));
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateRepositoriesList();
+            }
+        });
 
         updateRepositoriesList();
         return  view;
@@ -113,7 +125,7 @@ public class RepositoriesFragment extends androidx.fragment.app.Fragment {
             mLanguage = itemView.findViewById(R.id.text_repositories_language);
         }
 
-        private void bind(Repositories repositories){
+        private void bind(final Repositories repositories){
             mName.setText(repositories.getmName());
             mForksCount.setText(String.valueOf(repositories.getmForksCount()));
             if (!repositories.getmFork()){
@@ -125,6 +137,13 @@ public class RepositoriesFragment extends androidx.fragment.app.Fragment {
             mTime.setText(repositories.getmTime());
             mSize.setText(humanReadableByteCount(repositories.getmSize(),false));
             mLanguage.setText(repositories.getmLanguage());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = RepoActivity.newIntent(getActivity(), repositories.getRepoUrl());
+                    startActivity(intent);
+                }
+            });
         }
 
     }
@@ -143,6 +162,8 @@ public class RepositoriesFragment extends androidx.fragment.app.Fragment {
 
                         mRepositoriesAdapter = new RepositoriesApdater(repositoriesList);
                         mRepositoriesRecycleView.setAdapter(mRepositoriesAdapter);
+
+                        mSwipeRefreshLayout.setRefreshing(false);
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -166,6 +187,7 @@ public class RepositoriesFragment extends androidx.fragment.app.Fragment {
         String mTime;
         long mSize;
         String mLanguage;
+        String repoUrl;
 
         for (int i = 0; i < response.length(); i++) {
             try {
@@ -178,8 +200,9 @@ public class RepositoriesFragment extends androidx.fragment.app.Fragment {
                 mTime = currentItem.getString("created_at");
                 mSize = currentItem.getLong("size");
                 mLanguage = currentItem.getString("language");
+                repoUrl = currentItem.getString("url");
 
-                repositoriesList.add(new Repositories(mName,mFork,mStargazers,mTime,mForksCount,mSize,mLanguage));
+                repositoriesList.add(new Repositories(mName,mFork,mStargazers,mTime,mForksCount,mSize,mLanguage, repoUrl));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -198,8 +221,10 @@ public class RepositoriesFragment extends androidx.fragment.app.Fragment {
         private int mForksCount;
         private long mSize;
         private String mLanguage;
+        private String mRepoUrl;
 
-        private Repositories(String mName, boolean mFork, int mStargazers,String mTime,int mForksCount,long mSize,String mLanguage){
+        private Repositories(String mName, boolean mFork, int mStargazers,String mTime,int mForksCount,long mSize,
+                             String mLanguage, String repoUrl){
             this.mFork = mFork;
             this.mForksCount = mForksCount;;
             this.mLanguage = mLanguage;
@@ -207,6 +232,11 @@ public class RepositoriesFragment extends androidx.fragment.app.Fragment {
             this.mStargazers = mStargazers;
             this.mSize = mSize;
             setTime(mTime);
+            this.mRepoUrl = repoUrl;
+        }
+
+        public String getRepoUrl() {
+            return mRepoUrl;
         }
 
         public boolean getmFork() {

@@ -36,6 +36,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -248,6 +249,13 @@ public class FileExplorerFragment extends Fragment {
                         mContentAdapter.getContentList().clear();
                         mContentAdapter.getContentList().addAll(contentList);
                         mContentAdapter.notifyDataSetChanged();
+                        RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(getActivity()) {
+                            @Override protected int getVerticalSnapPreference() {
+                                return LinearSmoothScroller.SNAP_TO_START;
+                            }
+                        };
+                        smoothScroller.setTargetPosition(0);
+                        mRecyclerView.getLayoutManager().startSmoothScroll(smoothScroller);
                         mProgressBarLayout.setVisibility(View.GONE);
                     }
                 }, new Response.ErrorListener() {

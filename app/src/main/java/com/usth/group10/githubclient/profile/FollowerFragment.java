@@ -31,11 +31,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FollowerFragment extends Fragment {
     private static final String KEY_USER_URL = "user_url";
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mFollowerRecycleView;
     private FollowerAdapter mFollowerAdapter;
 
@@ -56,16 +58,24 @@ public class FollowerFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_feeds, container, false);
+
+        mSwipeRefreshLayout = v.findViewById(R.id.swipe_refresh_layout_feeds);
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.primaryColor));
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateFollowerList();
+            }
+        });
+
         mFollowerRecycleView = v.findViewById(R.id.recycler_view_feeds);
         mFollowerRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
 
         ArrayList<Follower> followerList = new ArrayList<>();
         mFollowerAdapter = new FollowerAdapter(followerList);
         mFollowerRecycleView.setAdapter(mFollowerAdapter);
         updateFollowerList();
-        return  v;
-
+        return v;
     }
 
     private  class FollowerAdapter extends RecyclerView.Adapter<FollowerViewHolder>{
@@ -146,7 +156,7 @@ public class FollowerFragment extends Fragment {
                         mFollowerAdapter.getFollowerList().clear();
                         mFollowerAdapter.getFollowerList().addAll(followersList);
                         mFollowerAdapter.notifyDataSetChanged();
-
+                        mSwipeRefreshLayout.setRefreshing(false);
                     }
                 }, new Response.ErrorListener() {
                     @Override

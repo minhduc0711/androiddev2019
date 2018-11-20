@@ -33,10 +33,12 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class FeedProfileFragment extends androidx.fragment.app.Fragment {
     private RecyclerView mFeedRecycleView;
     private RecyclerView.Adapter mFeedAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private static final String TAG = "FeedsFragment";
     private static final String KEY_USER_URL = "user_url";
 
@@ -59,6 +61,15 @@ public class FeedProfileFragment extends androidx.fragment.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_feeds, container, false);
         mFeedRecycleView = view.findViewById(R.id.recycler_view_feeds);
         mFeedRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout_feeds);
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.primaryColor));
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateFeedList();
+            }
+        });
 
         updateFeedList();
         return view;
@@ -149,6 +160,8 @@ public class FeedProfileFragment extends androidx.fragment.app.Fragment {
 
                         mFeedAdapter = new FeedAdapter(feedsList);
                         mFeedRecycleView.setAdapter(mFeedAdapter);
+
+                        mSwipeRefreshLayout.setRefreshing(false);
                     }
                 }, new Response.ErrorListener() {
                     @Override

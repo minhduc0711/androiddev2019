@@ -28,11 +28,13 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FollowingFragment extends Fragment {
     private static final String KEY_USER_URL = "user_url";
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mFollowingRecycleView;
     private FollowingAdapter mFollowingAdapter;
 
@@ -55,6 +57,15 @@ public class FollowingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_feeds, container, false);
         mFollowingRecycleView = view.findViewById(R.id.recycler_view_feeds);
         mFollowingRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout_feeds);
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.primaryColor));
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateFollowingList();
+            }
+        });
 
         ArrayList<Following> followingList = new ArrayList<>();
         mFollowingAdapter = new FollowingAdapter(followingList);
@@ -137,6 +148,7 @@ public class FollowingFragment extends Fragment {
                         mFollowingAdapter.getFollowingList().clear();
                         mFollowingAdapter.getFollowingList().addAll(followingList);
                         mFollowingAdapter.notifyDataSetChanged();
+                        mSwipeRefreshLayout.setRefreshing(false);
                     }
                 }, new Response.ErrorListener() {
                     @Override

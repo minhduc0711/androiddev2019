@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.text.Html;
@@ -19,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,8 +52,9 @@ public class FeedsFragment extends Fragment {
     private static final String TAG = "FeedsFragment";
 
     private FrameLayout mProgressBarLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mFeedsRecyclerView;
-    private RecyclerView.Adapter mFeedsAdapter;
+    private FeedsAdapter mFeedsAdapter;
 
     public FeedsFragment() {
         // Required empty public constructor
@@ -69,8 +70,19 @@ public class FeedsFragment extends Fragment {
         mProgressBarLayout = view.findViewById(R.id.progress_bar_layout_feeds);
         mProgressBarLayout.setVisibility(View.VISIBLE);
 
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout_feeds);
+        mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.primaryColor));
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateFeedsList();
+            }
+        });
+
         mFeedsRecyclerView = view.findViewById(R.id.recycler_view_feeds);
         mFeedsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mFeedsAdapter = new FeedsAdapter(new ArrayList<Feed>());
+        mFeedsRecyclerView.setAdapter(mFeedsAdapter);
 
         updateFeedsList();
         return view;
@@ -81,6 +93,10 @@ public class FeedsFragment extends Fragment {
 
         private FeedsAdapter(ArrayList<Feed> feedsList) {
             mFeedsList = feedsList;
+        }
+
+        public ArrayList<Feed> getFeedsList() {
+            return mFeedsList;
         }
 
         @NonNull
@@ -159,9 +175,12 @@ public class FeedsFragment extends Fragment {
                     public void onResponse(JSONArray response) {
                         ArrayList<Feed> feedsList = processRawJson(response);
                         
-                        mFeedsAdapter = new FeedsAdapter(feedsList);
-                        mFeedsRecyclerView.setAdapter(mFeedsAdapter);
+                        mFeedsAdapter.getFeedsList().clear();
+                        mFeedsAdapter.getFeedsList().addAll(feedsList);
+                        mFeedsAdapter.notifyDataSetChanged();
                         mProgressBarLayout.setVisibility(View.GONE);
+
+                        mSwipeRefreshLayout.setRefreshing(false);
                     }
                 }, new Response.ErrorListener() {
                     @Override
