@@ -90,10 +90,9 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent;
                     switch (menuItem.getItemId()) {
                         case R.id.item_drawer_home:
-                            Log.d(TAG, "Home fragment created");
                             mCurrentSelectedItemResId = menuItem.getItemId();
                             getSupportFragmentManager().beginTransaction().replace(R.id.layout_main, new FeedsFragment()).commit();
-                            mMainToolbar.setTitle(R.string.app_name);
+                            mMainToolbar.setTitle(R.string.title_fragment_feeds);
                             break;
                         case R.id.item_drawer_profile:
                             intent = ProfileActivity.newIntent(MainActivity.this, mAuthenticatedUserUrl);
@@ -101,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.item_drawer_trending:
                             mCurrentSelectedItemResId = menuItem.getItemId();
-                            mMainToolbar.setTitle(menuItem.getTitle());
-                            getSupportFragmentManager().beginTransaction().replace(R.id.layout_main, new TrendingFragment()).commit();
+                            intent = TrendingActivity.newIntent(MainActivity.this);
+                            startActivity(intent);
                             break;
                         case R.id.item_drawer_logout:
                             finish();

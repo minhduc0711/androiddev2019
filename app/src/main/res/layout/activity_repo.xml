@@ -25,8 +25,8 @@
 
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/userImage"
-                android:src="@drawable/profile_pic"
+                android:id="@+id/image_avatar_repo_activity"
+                tools:src="@drawable/profile_pic"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_width="50dp"
@@ -36,26 +36,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/userImage"
+                android:layout_toRightOf="@+id/image_avatar_repo_activity"
                 android:orientation="vertical">
 
                 <TextView
                     style="@style/TextAppearance.MaterialComponents.Subtitle1"
                     android:layout_margin="5dp"
-                    android:id="@+id/repoLink"
+                    android:id="@+id/text_repo_name_repo_activity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="minhduc0711/github-android" />
+                    tools:text="minhduc0711/github-android" />
 
                 <TextView
-                    android:id="@+id/timeRepoUpdated"
+                    android:id="@+id/text_repo_info_repo_activity"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/repoLink"
-                    android:text="Oct 28, 2018, 434kB" />
+                    android:layout_below="@+id/text_repo_name_repo_activity"
+                    tools:text="Oct 28, 2018, 434kB" />
 
             </LinearLayout>
 
