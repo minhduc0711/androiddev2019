@@ -357,11 +357,7 @@ public class RepoActivity extends AppCompatActivity implements TransmitDataDialo
             }
         }
     }
-}
-
-<<<<<<< HEAD
-
-=======
+    
     private void fetchRepoInfo() {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, mRepoUrl, null, new Response.Listener<JSONObject>() {
@@ -413,4 +409,3 @@ public class RepoActivity extends AppCompatActivity implements TransmitDataDialo
         return size + " " + sizeUnit;
     }
 }
->>>>>>> 198fa9884790e2aa4391682106383b9c02652a92
