@@ -1,23 +1,21 @@
 package com.usth.group10.githubclient.repository;
 
 
-import androidx.fragment.app.FragmentManager;
-
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
-import com.usth.group10.githubclient.others.NothingHereFragment;
 import com.usth.group10.githubclient.R;
+import com.usth.group10.githubclient.others.NothingHereFragment;
 import com.usth.group10.githubclient.repository.codePackage.CommitsFragment;
 import com.usth.group10.githubclient.repository.codePackage.ContributorsFragment;
 import com.usth.group10.githubclient.repository.codePackage.FileExplorerFragment;
 import com.usth.group10.githubclient.repository.codePackage.ReadmeFragment;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -31,6 +29,10 @@ public class CodeFragment extends Fragment {
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
 
+    public CodeFragment() {
+        // Required empty public constructor
+    }
+
     public static CodeFragment newInstance(String repoUrl) {
         CodeFragment codeFragment = new CodeFragment();
         Bundle args = new Bundle();
@@ -38,11 +40,6 @@ public class CodeFragment extends Fragment {
         codeFragment.setArguments(args);
         return codeFragment;
     }
-
-    public CodeFragment() {
-        // Required empty public constructor
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,30 +63,40 @@ public class CodeFragment extends Fragment {
     }
 
     private static class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
-        private String mRepoUrl;
         private final int PAGE_COUNT = 5;
-        private String titles[] = new String[] {"Readme", "Files", "Commits", "Releases", "Contributors"};
+        private String mRepoUrl;
+        private String titles[] = new String[]{"Readme", "Files", "Commits", "Releases", "Contributors"};
+
         private HomeFragmentPagerAdapter(FragmentManager fm, String repoUrl) {
             super(fm);
             mRepoUrl = repoUrl;
         }
+
         @Override
         public int getCount() {
             return PAGE_COUNT;
         }
+
         // number of pages for a ViewPager
         @Override
         public androidx.fragment.app.Fragment getItem(int page) {
             // returns an instance of Fragment corresponding to the specified page
             switch (page) {
-                case 0: return ReadmeFragment.newInstance(mRepoUrl);
-                case 1: return FileExplorerFragment.newInstance(mRepoUrl);
-                case 2: return CommitsFragment.newInstance(mRepoUrl);
-                case 3: return NothingHereFragment.newInstance("issues");
-                case 4: return ContributorsFragment.newInstance(mRepoUrl);
-                default: return new androidx.fragment.app.Fragment();
+                case 0:
+                    return ReadmeFragment.newInstance(mRepoUrl);
+                case 1:
+                    return FileExplorerFragment.newInstance(mRepoUrl);
+                case 2:
+                    return CommitsFragment.newInstance(mRepoUrl);
+                case 3:
+                    return NothingHereFragment.newInstance("issues");
+                case 4:
+                    return ContributorsFragment.newInstance(mRepoUrl);
+                default:
+                    return new androidx.fragment.app.Fragment();
             }
         }
+
         @Override
         public CharSequence getPageTitle(int page) {
             // returns a tab title corresponding to the specified page

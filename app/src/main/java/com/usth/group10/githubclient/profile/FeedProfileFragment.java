@@ -1,10 +1,8 @@
 package com.usth.group10.githubclient.profile;
 
 import android.content.Context;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,11 +34,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class FeedProfileFragment extends androidx.fragment.app.Fragment {
+    private static final String TAG = "FeedsFragment";
+    private static final String KEY_USER_URL = "user_url";
     private RecyclerView mFeedRecycleView;
     private RecyclerView.Adapter mFeedAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private static final String TAG = "FeedsFragment";
-    private static final String KEY_USER_URL = "user_url";
 
 
     public FeedProfileFragment() {
@@ -75,79 +73,7 @@ public class FeedProfileFragment extends androidx.fragment.app.Fragment {
         return view;
     }
 
-    private class FeedAdapter extends RecyclerView.Adapter<FeedsViewHolder>{
-        private ArrayList<Feed> mFeedArrayList;
-
-        private FeedAdapter(ArrayList<Feed> feedsList) {
-            mFeedArrayList = feedsList;
-        }
-
-        @NonNull
-        @Override
-        public FeedsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            return new FeedsViewHolder(layoutInflater, parent);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull FeedsViewHolder holder, int position) {
-            holder.bind(mFeedArrayList.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return mFeedArrayList.size();
-        }
-    }
-
-    private class FeedsViewHolder extends RecyclerView.ViewHolder{
-        private TextView mTextViewTitle;
-        private TextView mTextViewSize;
-        private TextView mTextViewBody;
-        private TextView mTextViewTime;
-        private ImageView mImageViewIcon;
-        private  String size;
-
-        private FeedsViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.item_feed_profile_list, parent, false));
-            mTextViewTitle = itemView.findViewById(R.id.text_title_feed_profile);
-            mTextViewSize = itemView.findViewById(R.id.text_commit_number_feed_profile);
-            mTextViewBody = itemView.findViewById(R.id.text_message_profile_feed);
-            mTextViewTime = itemView.findViewById(R.id.text_time_feed_profile);
-            mImageViewIcon = itemView.findViewById(R.id.img_symbol_feed_profile);
-        }
-
-        private void bind(final Feed feed){
-            size = feed.getSize() + " new commit";
-            mTextViewTitle.setText(feed.getTitle());
-
-            if (feed.getSize() == -1){
-                mTextViewSize.setVisibility(View.GONE);
-            }else {
-                mTextViewSize.setVisibility(View.VISIBLE);
-                mTextViewSize.setText(size);
-            }
-
-            mTextViewBody.setText(feed.getBody());
-
-            if(feed.getType().equals("PushEvent")){
-                mTextViewBody.setVisibility(View.VISIBLE);
-                mImageViewIcon.setImageResource(R.drawable.ic_repo_forked);
-            }else if (feed.getType().equals("PullRequestEvent")){
-                mTextViewBody.setVisibility(View.VISIBLE);
-                mImageViewIcon.setImageResource(R.drawable.ic_git_pull_request);
-            }else if (feed.getType().equals("ForkEvent")){
-                mTextViewBody.setVisibility(View.GONE);
-                mImageViewIcon.setImageResource(R.drawable.ic_git_commit);
-            }else if (feed.getType().equals("WatchEvent")){
-                mTextViewBody.setVisibility(View.GONE);
-                mImageViewIcon.setImageResource(R.drawable.ic_menu_star_full_color);
-            }
-            mTextViewTime.setText(feed.getTime());
-        }
-    }
-
-    private void updateFeedList(){
+    private void updateFeedList() {
         String access_token = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
                 .getString(MySingleton.KEY_ACCESS_TOKEN, "");
         String url = getArguments().getString(KEY_USER_URL) + "/events?access_token=" + access_token;
@@ -172,7 +98,7 @@ public class FeedProfileFragment extends androidx.fragment.app.Fragment {
         MySingleton.getInstance(getActivity()).addToRequestQueue(jsonArrayRequest);
     }
 
-    private  ArrayList<Feed> processRawJson(JSONArray response){
+    private ArrayList<Feed> processRawJson(JSONArray response) {
         JSONObject currentItem;
         ArrayList<Feed> feedsList = new ArrayList<>();
         String username, action, repoName;
@@ -180,10 +106,10 @@ public class FeedProfileFragment extends androidx.fragment.app.Fragment {
 
         String sha, message;
 
-        String title, body, time,type;
+        String title, body, time, type;
         int size;
 
-        for (int i = 0; i < response.length(); i++){
+        for (int i = 0; i < response.length(); i++) {
             body = null;
             size = -1;
             try {
@@ -198,14 +124,14 @@ public class FeedProfileFragment extends androidx.fragment.app.Fragment {
                         sha = currentItem.getJSONObject("payload").getJSONArray("commits").getJSONObject(0).getString("sha");
                         message = currentItem.getJSONObject("payload").getJSONArray("commits").getJSONObject(0).getString("message");
                         size = currentItem.getJSONObject("payload").getInt("size");
-                        body = sha.substring(0,6) + " " + message;
+                        body = sha.substring(0, 6) + " " + message;
                         break;
                     case "ForkEvent":
                         action = " forked ";
                         break;
                     case "PullRequestEvent":
                         action = " opened pull request ";
-                        repoName += "#" + currentItem.getJSONObject("payload").getInt("number") ;
+                        repoName += "#" + currentItem.getJSONObject("payload").getInt("number");
                         body = currentItem.getJSONObject("payload").getJSONObject("pull_request").getString("title");
                         break;
                     case "WatchEvent":
@@ -215,10 +141,10 @@ public class FeedProfileFragment extends androidx.fragment.app.Fragment {
                         action = " is confused ";
                 }
 
-                title = username +  action  + repoName;
+                title = username + action + repoName;
                 time = currentItem.getString("created_at");
 
-                feedsList.add(new Feed(title,body,time,size,type));
+                feedsList.add(new Feed(title, body, time, size, type));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -226,14 +152,86 @@ public class FeedProfileFragment extends androidx.fragment.app.Fragment {
         return feedsList;
     }
 
-    private class Feed{
+    private class FeedAdapter extends RecyclerView.Adapter<FeedsViewHolder> {
+        private ArrayList<Feed> mFeedArrayList;
+
+        private FeedAdapter(ArrayList<Feed> feedsList) {
+            mFeedArrayList = feedsList;
+        }
+
+        @NonNull
+        @Override
+        public FeedsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+            return new FeedsViewHolder(layoutInflater, parent);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull FeedsViewHolder holder, int position) {
+            holder.bind(mFeedArrayList.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return mFeedArrayList.size();
+        }
+    }
+
+    private class FeedsViewHolder extends RecyclerView.ViewHolder {
+        private TextView mTextViewTitle;
+        private TextView mTextViewSize;
+        private TextView mTextViewBody;
+        private TextView mTextViewTime;
+        private ImageView mImageViewIcon;
+        private String size;
+
+        private FeedsViewHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater.inflate(R.layout.item_feed_profile_list, parent, false));
+            mTextViewTitle = itemView.findViewById(R.id.text_title_feed_profile);
+            mTextViewSize = itemView.findViewById(R.id.text_commit_number_feed_profile);
+            mTextViewBody = itemView.findViewById(R.id.text_message_profile_feed);
+            mTextViewTime = itemView.findViewById(R.id.text_time_feed_profile);
+            mImageViewIcon = itemView.findViewById(R.id.img_symbol_feed_profile);
+        }
+
+        private void bind(final Feed feed) {
+            size = feed.getSize() + " new commit";
+            mTextViewTitle.setText(feed.getTitle());
+
+            if (feed.getSize() == -1) {
+                mTextViewSize.setVisibility(View.GONE);
+            } else {
+                mTextViewSize.setVisibility(View.VISIBLE);
+                mTextViewSize.setText(size);
+            }
+
+            mTextViewBody.setText(feed.getBody());
+
+            if (feed.getType().equals("PushEvent")) {
+                mTextViewBody.setVisibility(View.VISIBLE);
+                mImageViewIcon.setImageResource(R.drawable.ic_repo_forked);
+            } else if (feed.getType().equals("PullRequestEvent")) {
+                mTextViewBody.setVisibility(View.VISIBLE);
+                mImageViewIcon.setImageResource(R.drawable.ic_git_pull_request);
+            } else if (feed.getType().equals("ForkEvent")) {
+                mTextViewBody.setVisibility(View.GONE);
+                mImageViewIcon.setImageResource(R.drawable.ic_git_commit);
+            } else if (feed.getType().equals("WatchEvent")) {
+                mTextViewBody.setVisibility(View.GONE);
+                mImageViewIcon.setImageResource(R.drawable.ic_menu_star_full_color);
+            }
+            mTextViewTime.setText(feed.getTime());
+        }
+    }
+
+    private class Feed {
         private String mTitle;
         private String mBody;
         private String mTime;
         private int mSize;
         private String mType;
 
-        private Feed(String title, String body, String time,int size,String type ){
+        private Feed(String title, String body, String time, int size, String type) {
             this.mBody = body;
             this.mSize = size;
             setTime(time);
@@ -249,19 +247,6 @@ public class FeedProfileFragment extends androidx.fragment.app.Fragment {
             return mTime;
         }
 
-        public String getBody() {
-            return mBody;
-        }
-
-        public int getSize() {
-            return mSize;
-        }
-
-        public String getTitle() {
-            return mTitle;
-        }
-
-
         public void setTime(String time) {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
             try {
@@ -276,6 +261,18 @@ public class FeedProfileFragment extends androidx.fragment.app.Fragment {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+        }
+
+        public String getBody() {
+            return mBody;
+        }
+
+        public int getSize() {
+            return mSize;
+        }
+
+        public String getTitle() {
+            return mTitle;
         }
     }
 }

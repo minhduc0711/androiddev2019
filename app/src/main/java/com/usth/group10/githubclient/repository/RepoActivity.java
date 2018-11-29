@@ -1,25 +1,15 @@
 package com.usth.group10.githubclient.repository;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.PopupMenu;
-
-import androidx.fragment.app.Fragment;
-
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.format.DateUtils;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,19 +34,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.fragment.app.Fragment;
+
 
 public class RepoActivity extends AppCompatActivity implements TransmitDataDialog {
-    private static final String TAG = "RepoActivity";
     public static final String KEY_REPO_URL = "repo_url";
-
-
+    private static final String TAG = "RepoActivity";
     int starredCount, subscriberCount, forkedCount;
 
     private String mRepoUrl;
@@ -182,7 +173,7 @@ public class RepoActivity extends AppCompatActivity implements TransmitDataDialo
             public void onClick(View view) {
                 view.setSelected(!view.isSelected());
 
-                if (view.isSelected()){
+                if (view.isSelected()) {
                     subscriberSymbol.setColorFilter(Color.BLUE);
 //                    subscriberCount += 1;
 
@@ -198,7 +189,7 @@ public class RepoActivity extends AppCompatActivity implements TransmitDataDialo
             @Override
             public boolean onLongClick(View view) {
                 Intent intent1 = new Intent(RepoActivity.this, ShowUserList.class);
-                intent1.putExtra(ShowUserList.KEY_SUB_REPO, getIntent().getExtras().get(KEY_REPO_URL).toString()+"/subscribers");
+                intent1.putExtra(ShowUserList.KEY_SUB_REPO, getIntent().getExtras().get(KEY_REPO_URL).toString() + "/subscribers");
 
                 intent1.putExtra(ShowUserList.TITLE, "Watchers");
 
@@ -230,7 +221,7 @@ public class RepoActivity extends AppCompatActivity implements TransmitDataDialo
             @Override
             public boolean onLongClick(View view) {
                 Intent intent1 = new Intent(RepoActivity.this, ShowUserList.class);
-                intent1.putExtra(ShowUserList.KEY_SUB_REPO, getIntent().getExtras().get(KEY_REPO_URL).toString()+"/stargazers");
+                intent1.putExtra(ShowUserList.KEY_SUB_REPO, getIntent().getExtras().get(KEY_REPO_URL).toString() + "/stargazers");
                 intent1.putExtra(ShowUserList.TITLE, "Stars");
                 startActivity(intent1);
                 return true;
@@ -243,7 +234,7 @@ public class RepoActivity extends AppCompatActivity implements TransmitDataDialo
                 view.setSelected(!view.isSelected());
 
                 AskForkFragment askForkFragment = new AskForkFragment();
-                askForkFragment.show(getSupportFragmentManager(),  "dialog");
+                askForkFragment.show(getSupportFragmentManager(), "dialog");
             }
 
         });
@@ -252,7 +243,7 @@ public class RepoActivity extends AppCompatActivity implements TransmitDataDialo
             @Override
             public boolean onLongClick(View view) {
                 Intent intent1 = new Intent(RepoActivity.this, ShowUserList.class);
-                intent1.putExtra(ShowUserList.KEY_SUB_REPO, getIntent().getExtras().get(KEY_REPO_URL).toString()+"/forks");
+                intent1.putExtra(ShowUserList.KEY_SUB_REPO, getIntent().getExtras().get(KEY_REPO_URL).toString() + "/forks");
                 intent1.putExtra(ShowUserList.TITLE, "Forks");
                 startActivity(intent1);
                 return true;
@@ -264,7 +255,7 @@ public class RepoActivity extends AppCompatActivity implements TransmitDataDialo
             public void onClick(View view) {
                 view.setSelected(!view.isSelected());
 
-                if(view.isSelected()){
+                if (view.isSelected()) {
                     pinSymbol.setImageResource(R.drawable.ic_repo_pin_full_color);
                     pinSymbol.setColorFilter(Color.BLUE);
                 } else {
@@ -300,7 +291,7 @@ public class RepoActivity extends AppCompatActivity implements TransmitDataDialo
         });
     }
 
-//For FORK
+    //For FORK
     @Override
     public void TransmitData(boolean userAnswer) {
         if (userAnswer) {
@@ -311,53 +302,6 @@ public class RepoActivity extends AppCompatActivity implements TransmitDataDialo
         number_of_forks.setText(String.valueOf(forkedCount));
     }
 
-
-    private class FindCountTask extends AsyncTask<String, Void, Boolean> {
-        URL url;
-
-        String parseContent;
-
-        protected Boolean doInBackground(String... repo) {
-            try {
-                url = new URL(repo[0]);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String line = "";
-                parseContent = "";
-                while (line != null) {
-                    line = bufferedReader.readLine();
-                    parseContent = parseContent + line;
-                }
-
-                // Get count
-                JSONObject JO = new JSONObject(parseContent);
-                starredCount = JO.getInt("stargazers_count");
-                forkedCount = JO.getInt("forks_count");
-                subscriberCount = JO.getInt("subscribers_count");
-
-
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return true;
-        }
-
-        protected void onPostExecute(Boolean success) {
-            if (!success) {
-                Toast.makeText(RepoActivity.this, "Error network", Toast.LENGTH_SHORT).show();
-            } else {
-                number_of_stars.setText(String.valueOf(starredCount));
-                number_of_forks.setText(String.valueOf(forkedCount));
-                number_of_subscribers.setText(String.valueOf(subscriberCount));
-            }
-        }
-    }
-    
     private void fetchRepoInfo() {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, mRepoUrl, null, new Response.Listener<JSONObject>() {
@@ -407,5 +351,49 @@ public class RepoActivity extends AppCompatActivity implements TransmitDataDialo
             sizeUnit = "MB";
         } else sizeUnit = "KB";
         return size + " " + sizeUnit;
+    }
+
+    private class FindCountTask extends AsyncTask<String, Void, Boolean> {
+        URL url;
+
+        String parseContent;
+
+        protected Boolean doInBackground(String... repo) {
+            try {
+                url = new URL(repo[0]);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String line = "";
+                parseContent = "";
+                while (line != null) {
+                    line = bufferedReader.readLine();
+                    parseContent = parseContent + line;
+                }
+
+                // Get count
+                JSONObject JO = new JSONObject(parseContent);
+                starredCount = JO.getInt("stargazers_count");
+                forkedCount = JO.getInt("forks_count");
+                subscriberCount = JO.getInt("subscribers_count");
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+
+        protected void onPostExecute(Boolean success) {
+            if (!success) {
+                Toast.makeText(RepoActivity.this, "Error network", Toast.LENGTH_SHORT).show();
+            } else {
+                number_of_stars.setText(String.valueOf(starredCount));
+                number_of_forks.setText(String.valueOf(forkedCount));
+                number_of_subscribers.setText(String.valueOf(subscriberCount));
+            }
+        }
     }
 }

@@ -2,13 +2,14 @@ package com.usth.group10.githubclient.others;
 
 
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.usth.group10.githubclient.R;
+
+import androidx.fragment.app.Fragment;
 
 
 /**
@@ -19,19 +20,18 @@ public class NothingHereFragment extends Fragment {
 
     private TextView mTextViewMsgEmpty;
 
+    public NothingHereFragment() {
+        // Required empty public constructor
+    }
+
     public static NothingHereFragment newInstance(String itemName) {
-        
+
         Bundle args = new Bundle();
         args.putString(KEY_ITEM_NAME, itemName.toLowerCase());
         NothingHereFragment fragment = new NothingHereFragment();
         fragment.setArguments(args);
         return fragment;
     }
-
-    public NothingHereFragment() {
-        // Required empty public constructor
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -34,6 +34,10 @@ public class UserResultsFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mUserAdapter;
 
+    public UserResultsFragment() {
+        // Required empty public constructor
+    }
+
     public static UserResultsFragment newInstance(String jsonArray) {
         UserResultsFragment userResultsFragment = new UserResultsFragment();
         Bundle args = new Bundle();
@@ -41,11 +45,6 @@ public class UserResultsFragment extends Fragment {
         userResultsFragment.setArguments(args);
         return userResultsFragment;
     }
-
-    public UserResultsFragment() {
-        // Required empty public constructor
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,7 +67,8 @@ public class UserResultsFragment extends Fragment {
             mUserAdapter = new UserAdapter(userList);
             mRecyclerView.setAdapter(mUserAdapter);
             RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(getActivity()) {
-                @Override protected int getVerticalSnapPreference() {
+                @Override
+                protected int getVerticalSnapPreference() {
                     return LinearSmoothScroller.SNAP_TO_START;
                 }
             };

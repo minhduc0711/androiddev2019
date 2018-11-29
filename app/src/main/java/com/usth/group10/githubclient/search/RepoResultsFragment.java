@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.format.DateUtils;
@@ -48,6 +47,10 @@ public class RepoResultsFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mRepoAdapter;
 
+    public RepoResultsFragment() {
+        // Required empty public constructor
+    }
+
     public static RepoResultsFragment newInstance(String jsonArray) {
         RepoResultsFragment repoResultsFragment = new RepoResultsFragment();
         Bundle args = new Bundle();
@@ -55,11 +58,6 @@ public class RepoResultsFragment extends Fragment {
         repoResultsFragment.setArguments(args);
         return repoResultsFragment;
     }
-
-    public RepoResultsFragment() {
-        // Required empty public constructor
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,7 +79,8 @@ public class RepoResultsFragment extends Fragment {
             mRepoAdapter = new RepoAdapter(repoList);
             mRecyclerView.setAdapter(mRepoAdapter);
             RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(getActivity()) {
-                @Override protected int getVerticalSnapPreference() {
+                @Override
+                protected int getVerticalSnapPreference() {
                     return LinearSmoothScroller.SNAP_TO_START;
                 }
             };
@@ -218,7 +217,7 @@ public class RepoResultsFragment extends Fragment {
 
         private Spannable getImageSpannable(Context context) {
             int[] iconIds = {R.drawable.ic_star_border_black_24dp, R.drawable.ic_repo_forked, R.drawable.ic_access_time_black_24dp,
-                              R.drawable.ic_size_bulleted_black_24dp};
+                    R.drawable.ic_size_bulleted_black_24dp};
             int iconIndex = 0;
 
             String sizeUnit;

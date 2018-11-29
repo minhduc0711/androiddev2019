@@ -56,16 +56,16 @@ public class FileExplorerFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ContentAdapter mContentAdapter;
 
+    public FileExplorerFragment() {
+        // Required empty public constructor
+    }
+
     public static FileExplorerFragment newInstance(String repoUrl) {
         FileExplorerFragment fileExplorerFragment = new FileExplorerFragment();
         Bundle args = new Bundle();
         args.putString(KEY_REPO_URL, repoUrl);
         fileExplorerFragment.setArguments(args);
         return fileExplorerFragment;
-    }
-
-    public FileExplorerFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -119,70 +119,6 @@ public class FileExplorerFragment extends Fragment {
         fetchDefaultBranch();
 
         return view;
-    }
-
-    private class ContentAdapter extends RecyclerView.Adapter<ContentViewHolder> {
-        private ArrayList<Content> mContentList;
-
-        private ContentAdapter(ArrayList<Content> contentList) {
-            mContentList = contentList;
-        }
-
-        private ArrayList<Content> getContentList() {
-            return mContentList;
-        }
-
-        @NonNull
-        @Override
-        public ContentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            return new ContentViewHolder(layoutInflater, parent);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ContentViewHolder holder, int position) {
-            holder.bind(mContentList.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return mContentList.size();
-        }
-    }
-
-    private class ContentViewHolder extends RecyclerView.ViewHolder {
-        private ImageView mImageContentIcon;
-        private TextView mContentNameTextView;
-
-        private ContentViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.item_file_explorer, parent, false));
-            mImageContentIcon = itemView.findViewById(R.id.image_file_explorer_content);
-            mContentNameTextView = itemView.findViewById(R.id.text_file_explorer_content_name);
-        }
-
-        private void bind(final Content content) {
-            if (content.getType().equals("file")) {
-                mImageContentIcon.setImageResource(R.drawable.ic_file);
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = FileContentActivity.newIntent(getActivity(), content.getName(), content.getUrl());
-                        startActivity(intent);
-                    }
-                });
-            } else {
-                mImageContentIcon.setImageResource(R.drawable.ic_folder);
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mContentUrlStack.push(mCurrentContentUrl);
-                        fetchContentList(content.getUrl());
-                    }
-                });
-            }
-
-            mContentNameTextView.setText(content.getName());
-        }
     }
 
     private void fetchDefaultBranch() {
@@ -250,7 +186,8 @@ public class FileExplorerFragment extends Fragment {
                         mContentAdapter.getContentList().addAll(contentList);
                         mContentAdapter.notifyDataSetChanged();
                         RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(getActivity()) {
-                            @Override protected int getVerticalSnapPreference() {
+                            @Override
+                            protected int getVerticalSnapPreference() {
                                 return LinearSmoothScroller.SNAP_TO_START;
                             }
                         };
@@ -297,6 +234,70 @@ public class FileExplorerFragment extends Fragment {
             }
         });
         return contentList;
+    }
+
+    private class ContentAdapter extends RecyclerView.Adapter<ContentViewHolder> {
+        private ArrayList<Content> mContentList;
+
+        private ContentAdapter(ArrayList<Content> contentList) {
+            mContentList = contentList;
+        }
+
+        private ArrayList<Content> getContentList() {
+            return mContentList;
+        }
+
+        @NonNull
+        @Override
+        public ContentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+            return new ContentViewHolder(layoutInflater, parent);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ContentViewHolder holder, int position) {
+            holder.bind(mContentList.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return mContentList.size();
+        }
+    }
+
+    private class ContentViewHolder extends RecyclerView.ViewHolder {
+        private ImageView mImageContentIcon;
+        private TextView mContentNameTextView;
+
+        private ContentViewHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater.inflate(R.layout.item_file_explorer, parent, false));
+            mImageContentIcon = itemView.findViewById(R.id.image_file_explorer_content);
+            mContentNameTextView = itemView.findViewById(R.id.text_file_explorer_content_name);
+        }
+
+        private void bind(final Content content) {
+            if (content.getType().equals("file")) {
+                mImageContentIcon.setImageResource(R.drawable.ic_file);
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = FileContentActivity.newIntent(getActivity(), content.getName(), content.getUrl());
+                        startActivity(intent);
+                    }
+                });
+            } else {
+                mImageContentIcon.setImageResource(R.drawable.ic_folder);
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mContentUrlStack.push(mCurrentContentUrl);
+                        fetchContentList(content.getUrl());
+                    }
+                });
+            }
+
+            mContentNameTextView.setText(content.getName());
+        }
     }
 
     private class Content {

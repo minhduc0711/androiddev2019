@@ -15,9 +15,9 @@ public class MySingleton {
     public static final String KEY_USERNAME = "username";
 
     private static MySingleton mInstance;
+    private static Context mCtx;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
-    private static Context mCtx;
 
     private MySingleton(Context context) {
         mCtx = context;

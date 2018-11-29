@@ -1,7 +1,5 @@
 package com.usth.group10.githubclient;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +17,8 @@ import com.usth.group10.githubclient.others.MySingleton;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String clientId = "ea654ab9b8b11cbb932d";
@@ -49,10 +49,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW,
-                                            Uri.parse("https://github.com/login/oauth/authorize" +
-                                                        "?client_id=" + clientId +
-                                                        "&scope=repo%20user" +
-                                                        "&redirect_uri=" + redirectUri));
+                        Uri.parse("https://github.com/login/oauth/authorize" +
+                                "?client_id=" + clientId +
+                                "&scope=repo%20user" +
+                                "&redirect_uri=" + redirectUri));
                 finish();
                 startActivity(intent);
             }
@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void getAccessToken(final String code) {
-        StringRequest sr = new StringRequest(Request.Method.POST,"https://github.com/login/oauth/access_token", new Response.Listener<String>() {
+        StringRequest sr = new StringRequest(Request.Method.POST, "https://github.com/login/oauth/access_token", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 String access_token = null;
@@ -99,10 +99,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(LoginActivity.this, "Can not get access token", Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<>();
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
                 params.put("client_id", clientId);
                 params.put("client_secret", clientSecret);
                 params.put("code", code);
@@ -112,8 +112,8 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public Map<String, String> getHeaders() {
-                Map<String,String> params = new HashMap<>();
-                params.put("Content-Type","application/x-www-form-urlencoded");
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
                 return params;
             }
         };

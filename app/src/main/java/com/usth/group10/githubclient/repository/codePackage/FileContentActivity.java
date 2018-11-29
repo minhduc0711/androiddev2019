@@ -1,12 +1,5 @@
 package com.usth.group10.githubclient.repository.codePackage;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import br.tiagohm.codeview.CodeView;
-import br.tiagohm.codeview.Language;
-import br.tiagohm.codeview.Theme;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +18,13 @@ import com.usth.group10.githubclient.others.MySingleton;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import br.tiagohm.codeview.CodeView;
+import br.tiagohm.codeview.Language;
+import br.tiagohm.codeview.Theme;
 
 public class FileContentActivity extends AppCompatActivity {
     private static final String KEY_FILE_NAME = "file_name";
@@ -63,16 +63,20 @@ public class FileContentActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onStartCodeHighlight() {}
+            public void onStartCodeHighlight() {
+            }
 
             @Override
-            public void onLineClicked(int i, String s) {}
+            public void onLineClicked(int i, String s) {
+            }
 
             @Override
-            public void onFontSizeChanged(int i) {}
+            public void onFontSizeChanged(int i) {
+            }
 
             @Override
-            public void onLanguageDetected(Language language, int i) {}
+            public void onLanguageDetected(Language language, int i) {
+            }
         });
         fetchFileContent();
     }
@@ -106,7 +110,7 @@ public class FileContentActivity extends AppCompatActivity {
         }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String>  params = new HashMap<>();
+                Map<String, String> params = new HashMap<>();
                 params.put("Accept", "application/vnd.github.raw.html");
                 return params;
             }

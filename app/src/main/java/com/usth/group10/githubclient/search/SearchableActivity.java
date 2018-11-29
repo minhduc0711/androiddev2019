@@ -1,15 +1,5 @@
 package com.usth.group10.githubclient.search;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +24,16 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 public class SearchableActivity extends AppCompatActivity {
     private static final int MAX_RESULTS_COUNT = 20;
@@ -175,9 +175,15 @@ public class SearchableActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSearchView.clearFocus();
+    }
+
     private static class SearchFragmentPagerAdapter extends FragmentStatePagerAdapter {
         private final int PAGE_COUNT = 2;
-        private String titles[] = new String[] {"Repositories", "Users"};
+        private String titles[] = new String[]{"Repositories", "Users"};
         private ArrayList<Fragment> mFragmentList = new ArrayList<>();
 
         private SearchFragmentPagerAdapter(FragmentManager fm) {
@@ -191,16 +197,21 @@ public class SearchableActivity extends AppCompatActivity {
         public int getCount() {
             return PAGE_COUNT;
         }
+
         // number of pages for a ViewPager
         @Override
         public Fragment getItem(int page) {
             // returns an instance of Fragment corresponding to the specified page
             switch (page) {
-                case 0: return mFragmentList.get(0);
-                case 1: return mFragmentList.get(1);
-                default: return new Fragment();
+                case 0:
+                    return mFragmentList.get(0);
+                case 1:
+                    return mFragmentList.get(1);
+                default:
+                    return new Fragment();
             }
         }
+
         @Override
         public CharSequence getPageTitle(int page) {
             // returns a tab title corresponding to the specified page
@@ -217,11 +228,5 @@ public class SearchableActivity extends AppCompatActivity {
         public int getItemPosition(@NonNull Object object) {
             return POSITION_NONE;
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mSearchView.clearFocus();
     }
 }

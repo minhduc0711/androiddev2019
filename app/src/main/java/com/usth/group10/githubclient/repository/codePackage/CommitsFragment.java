@@ -1,6 +1,5 @@
 package com.usth.group10.githubclient.repository.codePackage;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateUtils;
@@ -8,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +18,6 @@ import com.squareup.picasso.Picasso;
 import com.usth.group10.githubclient.R;
 import com.usth.group10.githubclient.others.MySingleton;
 import com.usth.group10.githubclient.profile.ProfileActivity;
-import com.usth.group10.githubclient.repository.RepoActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,16 +45,16 @@ public class CommitsFragment extends Fragment {
     private RecyclerView mCommitsRecyclerView;
     private RecyclerView.Adapter mCommitsAdapter;
 
+    public CommitsFragment() {
+        // Required empty public constructor
+    }
+
     public static CommitsFragment newInstance(String repoUrl) {
         CommitsFragment CommitsFragment = new CommitsFragment();
         Bundle args = new Bundle();
         args.putString(KEY_REPO_URL, repoUrl);
         CommitsFragment.setArguments(args);
         return CommitsFragment;
-    }
-
-    public CommitsFragment() {
-        // Required empty public constructor
     }
 
     @Nullable
@@ -74,63 +71,6 @@ public class CommitsFragment extends Fragment {
 
         updateCommitsList();
         return view;
-    }
-
-    private class CommitsFeedAdapter extends RecyclerView.Adapter<CommitsViewHolder>{
-        private ArrayList<CommitsFeed> mCommitsList;
-
-        private CommitsFeedAdapter(ArrayList<CommitsFeed> commitsList){
-            mCommitsList = commitsList;}
-
-        @NonNull
-        @Override
-        public CommitsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            return new CommitsViewHolder(layoutInflater, parent);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull CommitsViewHolder holder, int position) {
-            holder.bind(mCommitsList.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return mCommitsList.size();
-        }
-    }
-
-
-
-    private class CommitsViewHolder extends RecyclerView.ViewHolder {
-        private CircleImageView mImageUserAvatar;
-        private TextView mTextViewTitle;
-        private TextView mTextViewUsername;
-        private TextView mTextViewTime;
-
-        private CommitsViewHolder(LayoutInflater inflater, ViewGroup parent){
-            super(inflater.inflate(R.layout.item_feeds_list, parent, false));
-
-            mImageUserAvatar = itemView.findViewById(R.id.image_avatar_feeds);
-            mTextViewTitle = itemView.findViewById(R.id.text_title_feeds);
-            mTextViewTime = itemView.findViewById(R.id.text_time_feeds);
-            mTextViewUsername = itemView.findViewById(R.id.text_content_feeds);
-        }
-
-        private void bind(final CommitsFeed commitsFeed){
-            mTextViewTitle.setText(commitsFeed.getTitle());
-            mTextViewTime.setText(commitsFeed.getTime());
-            mTextViewUsername.setText(commitsFeed.getUsername());
-            Picasso.get().load(commitsFeed.getUserAvatarUrl()).into(mImageUserAvatar);
-
-            mImageUserAvatar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = ProfileActivity.newIntent(getActivity(), commitsFeed.getUserUrl());
-                            startActivity(intent);
-                }
-            });
-        }
     }
 
     private void updateCommitsList() {
@@ -155,16 +95,14 @@ public class CommitsFragment extends Fragment {
         MySingleton.getInstance(getActivity()).addToRequestQueue(jsonArrayRequest);
     }
 
-
-
-    private ArrayList<CommitsFeed> processRawJson(JSONArray response){
+    private ArrayList<CommitsFeed> processRawJson(JSONArray response) {
         JSONObject currentItem;
         ArrayList<CommitsFeed> commitsFeedsList = new ArrayList<>();
 
         String title, userAvatarUrl, time;
         String username, userUrl;
 
-        for (int i = 0; i < response.length(); i++){
+        for (int i = 0; i < response.length(); i++) {
             try {
                 currentItem = response.getJSONObject(i);
                 username = currentItem.getJSONObject("committer").getString("login");
@@ -175,12 +113,68 @@ public class CommitsFragment extends Fragment {
 
                 commitsFeedsList.add(new CommitsFeed(title, username, userAvatarUrl, time, userUrl));
 
-            } catch (JSONException e){
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
         }
         return commitsFeedsList;
+    }
+
+    private class CommitsFeedAdapter extends RecyclerView.Adapter<CommitsViewHolder> {
+        private ArrayList<CommitsFeed> mCommitsList;
+
+        private CommitsFeedAdapter(ArrayList<CommitsFeed> commitsList) {
+            mCommitsList = commitsList;
+        }
+
+        @NonNull
+        @Override
+        public CommitsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+            return new CommitsViewHolder(layoutInflater, parent);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull CommitsViewHolder holder, int position) {
+            holder.bind(mCommitsList.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return mCommitsList.size();
+        }
+    }
+
+    private class CommitsViewHolder extends RecyclerView.ViewHolder {
+        private CircleImageView mImageUserAvatar;
+        private TextView mTextViewTitle;
+        private TextView mTextViewUsername;
+        private TextView mTextViewTime;
+
+        private CommitsViewHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater.inflate(R.layout.item_feeds_list, parent, false));
+
+            mImageUserAvatar = itemView.findViewById(R.id.image_avatar_feeds);
+            mTextViewTitle = itemView.findViewById(R.id.text_title_feeds);
+            mTextViewTime = itemView.findViewById(R.id.text_time_feeds);
+            mTextViewUsername = itemView.findViewById(R.id.text_content_feeds);
+        }
+
+        private void bind(final CommitsFeed commitsFeed) {
+            mTextViewTitle.setText(commitsFeed.getTitle());
+            mTextViewTime.setText(commitsFeed.getTime());
+            mTextViewUsername.setText(commitsFeed.getUsername());
+            Picasso.get().load(commitsFeed.getUserAvatarUrl()).into(mImageUserAvatar);
+
+            mImageUserAvatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = ProfileActivity.newIntent(getActivity(), commitsFeed.getUserUrl());
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     private class CommitsFeed {
@@ -190,38 +184,49 @@ public class CommitsFragment extends Fragment {
         private String mTime;
         private String mUserUrl;
 
-        private CommitsFeed(String title, String username, String userAvatarUrl, String time, String userUrl){
+        private CommitsFeed(String title, String username, String userAvatarUrl, String time, String userUrl) {
             mTitle = title;
             mUsername = username;
             mUserAvatarUrl = userAvatarUrl;
             mUserUrl = userUrl;
             setTime(time);
         }
-        public String getTitle() { return mTitle; }
 
-        public String getUserAvatarUrl() { return mUserAvatarUrl; }
+        public String getTitle() {
+            return mTitle;
+        }
 
-        public String getUsername() { return mUsername; }
+        public String getUserAvatarUrl() {
+            return mUserAvatarUrl;
+        }
 
-        public String getTime() { return mTime; }
+        public String getUsername() {
+            return mUsername;
+        }
 
-        public String getUserUrl() { return mUserUrl; }
+        public String getTime() {
+            return mTime;
+        }
 
-        public void setTime(String time){
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",Locale.US);
+        public void setTime(String time) {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
             try {
                 Date d = formatter.parse(time);
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(d);
-                calendar.add(Calendar.HOUR,7);
+                calendar.add(Calendar.HOUR, 7);
 
                 mTime = DateUtils.getRelativeTimeSpanString(calendar.getTime().getTime(), new Date().getTime(),
-                                                            DateUtils.MINUTE_IN_MILLIS,
-                                                            DateUtils.FORMAT_ABBREV_RELATIVE).toString();
+                        DateUtils.MINUTE_IN_MILLIS,
+                        DateUtils.FORMAT_ABBREV_RELATIVE).toString();
 
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+        }
+
+        public String getUserUrl() {
+            return mUserUrl;
         }
     }
 }

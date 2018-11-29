@@ -2,7 +2,6 @@ package com.usth.group10.githubclient.profile;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +22,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import android.support.v4.app.*;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -41,16 +37,16 @@ public class FollowerFragment extends Fragment {
     private RecyclerView mFollowerRecycleView;
     private FollowerAdapter mFollowerAdapter;
 
+    public FollowerFragment() {
+        // Required empty public constructor
+    }
+
     public static FollowerFragment newInstance(String userUrl) {
         FollowerFragment followerFragment = new FollowerFragment();
         Bundle args = new Bundle();
         args.putString(KEY_USER_URL, userUrl);
         followerFragment.setArguments(args);
         return followerFragment;
-    }
-
-    public FollowerFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -78,71 +74,7 @@ public class FollowerFragment extends Fragment {
         return v;
     }
 
-    private  class FollowerAdapter extends RecyclerView.Adapter<FollowerViewHolder>{
-        private ArrayList<Follower> mFollowerList;
-
-        private FollowerAdapter(ArrayList<Follower> followerArrayList){
-            mFollowerList = followerArrayList;
-        }
-
-        public ArrayList<Follower> getFollowerList() {
-            return mFollowerList;
-        }
-
-        @NonNull
-        @Override
-        public FollowerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            return  new FollowerViewHolder(layoutInflater, parent);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull FollowerViewHolder holder, int position) {
-            holder.bind(mFollowerList.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return mFollowerList.size(); }
-    }
-
-
-    private class FollowerViewHolder extends RecyclerView.ViewHolder{
-        private CircleImageView mUserAvatar;
-        private TextView mTextViewName;
-
-        private FollowerViewHolder(LayoutInflater inflater, ViewGroup parent){
-            super(inflater.inflate(R.layout.item_user_list,parent,false));
-            mUserAvatar = itemView.findViewById(R.id.image_avatar_user_list);
-            mTextViewName = itemView.findViewById(R.id.text_username_user_list);
-
-        }
-
-        private void bind(final Follower follower){
-            mTextViewName.setText(follower.getmUserName());
-
-            Picasso.get().load(follower.getmUserAvaterURL()).into(mUserAvatar);
-            mUserAvatar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = ProfileActivity.newIntent(getActivity(),follower.getmUserURL());
-                    startActivity(intent);
-                }
-            });
-            mTextViewName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = ProfileActivity.newIntent(getActivity(),follower.getmUserURL());
-                    startActivity(intent);
-                }
-            });
-        }
-
-    }
-
-
-
-    private void updateFollowerList(){
+    private void updateFollowerList() {
         String access_token = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
                 .getString(MySingleton.KEY_ACCESS_TOKEN, "");
 
@@ -162,14 +94,14 @@ public class FollowerFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //Nothing
-                        Toast.makeText(getContext(),"Loading follower failed",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Loading follower failed", Toast.LENGTH_SHORT).show();
                     }
                 });
 
         MySingleton.getInstance(getActivity()).addToRequestQueue(jsonArrayRequest);
     }
 
-    private ArrayList<Follower> processRawJson(JSONArray response){
+    private ArrayList<Follower> processRawJson(JSONArray response) {
         JSONObject currentItem;
         ArrayList<Follower> followersList = new ArrayList<>();
 
@@ -182,7 +114,7 @@ public class FollowerFragment extends Fragment {
                 userAvatarURL = currentItem.getString("avatar_url");
                 userURL = currentItem.getString("url");
 
-                followersList.add(new Follower(userURL,userAvatarURL,name));
+                followersList.add(new Follower(userURL, userAvatarURL, name));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -190,12 +122,74 @@ public class FollowerFragment extends Fragment {
         return followersList;
     }
 
-    private class Follower{
+    private class FollowerAdapter extends RecyclerView.Adapter<FollowerViewHolder> {
+        private ArrayList<Follower> mFollowerList;
+
+        private FollowerAdapter(ArrayList<Follower> followerArrayList) {
+            mFollowerList = followerArrayList;
+        }
+
+        public ArrayList<Follower> getFollowerList() {
+            return mFollowerList;
+        }
+
+        @NonNull
+        @Override
+        public FollowerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+            return new FollowerViewHolder(layoutInflater, parent);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull FollowerViewHolder holder, int position) {
+            holder.bind(mFollowerList.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return mFollowerList.size();
+        }
+    }
+
+    private class FollowerViewHolder extends RecyclerView.ViewHolder {
+        private CircleImageView mUserAvatar;
+        private TextView mTextViewName;
+
+        private FollowerViewHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater.inflate(R.layout.item_user_list, parent, false));
+            mUserAvatar = itemView.findViewById(R.id.image_avatar_user_list);
+            mTextViewName = itemView.findViewById(R.id.text_username_user_list);
+
+        }
+
+        private void bind(final Follower follower) {
+            mTextViewName.setText(follower.getmUserName());
+
+            Picasso.get().load(follower.getmUserAvaterURL()).into(mUserAvatar);
+            mUserAvatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = ProfileActivity.newIntent(getActivity(), follower.getmUserURL());
+                    startActivity(intent);
+                }
+            });
+            mTextViewName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = ProfileActivity.newIntent(getActivity(), follower.getmUserURL());
+                    startActivity(intent);
+                }
+            });
+        }
+
+    }
+
+    private class Follower {
         private String mUserAvaterURL;
         private String mUserURL;
         private String mUserName;
 
-        private Follower(String mUserURL,String mUserAvaterURL, String mUserName){
+        private Follower(String mUserURL, String mUserAvaterURL, String mUserName) {
             this.mUserAvaterURL = mUserAvaterURL;
             this.mUserName = mUserName;
             this.mUserURL = mUserURL;
@@ -213,7 +207,6 @@ public class FollowerFragment extends Fragment {
             return mUserURL;
         }
     }
-
 
 
 }

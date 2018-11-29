@@ -2,10 +2,6 @@ package com.usth.group10.githubclient.profile;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import de.hdodenhof.circleimageview.CircleImageView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +13,12 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.squareup.picasso.Picasso;
 import com.usth.group10.githubclient.R;
 import com.usth.group10.githubclient.others.MySingleton;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,6 +28,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import androidx.fragment.app.Fragment;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class OverviewProfileFragment extends Fragment {
@@ -49,16 +46,16 @@ public class OverviewProfileFragment extends Fragment {
     private CircleImageView mProfileImage;
     private TextView mProfileCreatedDateText;
 
+    public OverviewProfileFragment() {
+        // Required empty public constructor
+    }
+
     public static OverviewProfileFragment newInstance(String userUrl) {
         OverviewProfileFragment overviewProfileFragment = new OverviewProfileFragment();
         Bundle args = new Bundle();
         args.putString(KEY_USER_URL, userUrl);
         overviewProfileFragment.setArguments(args);
         return overviewProfileFragment;
-    }
-
-    public OverviewProfileFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -89,10 +86,10 @@ public class OverviewProfileFragment extends Fragment {
         });
 
         // Update Profileimage, Time, Name and Id
-        mProfileLoginText = (TextView)view.findViewById(R.id.text_profile_login);
-        mProfileNameText = (TextView)view.findViewById(R.id.text_profile_name);
+        mProfileLoginText = (TextView) view.findViewById(R.id.text_profile_login);
+        mProfileNameText = (TextView) view.findViewById(R.id.text_profile_name);
         mProfileImage = view.findViewById(R.id.image_profile);
-        mProfileCreatedDateText = (TextView)view.findViewById(R.id.text_profile_date);
+        mProfileCreatedDateText = (TextView) view.findViewById(R.id.text_profile_date);
 
         String access_token = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
                 .getString(MySingleton.KEY_ACCESS_TOKEN, "");
@@ -104,13 +101,11 @@ public class OverviewProfileFragment extends Fragment {
         String url_real_username = "https://api.github.com/users/" + username + "?access_token=" + access_token;
 
 
-
-        if(url_real_username.equals(url)){
+        if (url_real_username.equals(url)) {
             mFollowPersonButton.setVisibility(View.GONE);
-        }else {
+        } else {
             mFollowPersonButton.setVisibility(View.VISIBLE);
         }
-
 
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
@@ -130,27 +125,27 @@ public class OverviewProfileFragment extends Fragment {
                     final boolean[] following = checkFollow(response.getString("login"));
                     //Check whether is following or not
                     mFollowPersonButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (!following[0]){
-                                    try {
-                                        followPerson(response.getString("login"));
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }else {
-                                    try {
-                                        unfollowPerson(response.getString("login"));
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
+                        @Override
+                        public void onClick(View v) {
+                            if (!following[0]) {
+                                try {
+                                    followPerson(response.getString("login"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                try {
+                                    unfollowPerson(response.getString("login"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
                             }
+                        }
                     });
 
                     //Set Time
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",Locale.US);
-                    SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd",Locale.US);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+                    SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
                     Date date = sdf.parse(response.getString("created_at"));
                     mProfileCreatedDateText.setText(outputFormat.format(date));
 
@@ -177,11 +172,11 @@ public class OverviewProfileFragment extends Fragment {
     }
 
 
-    private void followPerson(String name){
+    private void followPerson(String name) {
         String access_token = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
                 .getString(MySingleton.KEY_ACCESS_TOKEN, "");
 
-        String url_following_name = "https://api.github.com/user/following/" + name +"?access_token=" + access_token;
+        String url_following_name = "https://api.github.com/user/following/" + name + "?access_token=" + access_token;
 
         StringRequest putRequest = new StringRequest
                 (Request.Method.PUT, url_following_name, new Response.Listener<String>() {
@@ -192,14 +187,14 @@ public class OverviewProfileFragment extends Fragment {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(),"Can't follow",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Can't follow", Toast.LENGTH_SHORT).show();
                     }
                 }
-                ){
+                ) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String> ();
-                params.put("Content-length","0");
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-length", "0");
 
                 return params;
             }
@@ -208,11 +203,11 @@ public class OverviewProfileFragment extends Fragment {
         MySingleton.getInstance(getActivity()).addToRequestQueue(putRequest);
     }
 
-    private void unfollowPerson(String name){
+    private void unfollowPerson(String name) {
         String access_token = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
                 .getString(MySingleton.KEY_ACCESS_TOKEN, "");
 
-        String url_delete_following_name = "https://api.github.com/user/following/" + name +"?access_token=" + access_token;
+        String url_delete_following_name = "https://api.github.com/user/following/" + name + "?access_token=" + access_token;
 
         StringRequest deleteRequest = new StringRequest
                 (Request.Method.DELETE, url_delete_following_name, new Response.Listener<String>() {
@@ -223,7 +218,7 @@ public class OverviewProfileFragment extends Fragment {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(),"Can't delete",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Can't delete", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -231,13 +226,13 @@ public class OverviewProfileFragment extends Fragment {
 
     }
 
-    private boolean[] checkFollow(String name){
+    private boolean[] checkFollow(String name) {
         final boolean[] follow = {false};
 
         String access_token = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
                 .getString(MySingleton.KEY_ACCESS_TOKEN, "");
 
-        String url_following_name = "https://api.github.com/user/following/" + name +"?access_token=" + access_token;
+        String url_following_name = "https://api.github.com/user/following/" + name + "?access_token=" + access_token;
 
 
         StringRequest putRequest = new StringRequest

@@ -2,10 +2,6 @@ package com.usth.group10.githubclient.home;
 
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,8 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.usth.group10.githubclient.others.NothingHereFragment;
 import com.usth.group10.githubclient.R;
+import com.usth.group10.githubclient.others.NothingHereFragment;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 
 /**

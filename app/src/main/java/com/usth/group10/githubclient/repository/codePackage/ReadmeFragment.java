@@ -1,11 +1,6 @@
 package com.usth.group10.githubclient.repository.codePackage;
 
-import android.app.DownloadManager;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +9,12 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.usth.group10.githubclient.R;
 import com.usth.group10.githubclient.others.MySingleton;
 import com.usth.group10.githubclient.others.NothingHereFragment;
-
-import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
-import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -84,7 +73,7 @@ public class ReadmeFragment extends Fragment {
                                 "</head>\n" +
                                 "<body>" + response + "</body>\n" +
                                 "</html>\n";
-                        mWebView.loadData(response,"text/html","UTF-8");
+                        mWebView.loadData(response, "text/html", "UTF-8");
                     }
                 },
                 new Response.ErrorListener() {
@@ -104,5 +93,4 @@ public class ReadmeFragment extends Fragment {
         };
         MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
-
 }

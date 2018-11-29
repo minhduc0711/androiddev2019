@@ -4,14 +4,6 @@ package com.usth.group10.githubclient.home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import de.hdodenhof.circleimageview.CircleImageView;
-
 import android.text.Html;
 import android.text.Spanned;
 import android.text.format.DateUtils;
@@ -43,6 +35,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
@@ -88,83 +87,11 @@ public class FeedsFragment extends Fragment {
         return view;
     }
 
-    private class FeedsAdapter extends RecyclerView.Adapter<FeedsViewHolder> {
-        private ArrayList<Feed> mFeedsList;
-
-        private FeedsAdapter(ArrayList<Feed> feedsList) {
-            mFeedsList = feedsList;
-        }
-
-        public ArrayList<Feed> getFeedsList() {
-            return mFeedsList;
-        }
-
-        @NonNull
-        @Override
-        public FeedsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            return new FeedsViewHolder(layoutInflater, parent);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull FeedsViewHolder holder, int position) {
-            holder.bind(mFeedsList.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return mFeedsList.size();
-        }
-    }
-
-    private class FeedsViewHolder extends RecyclerView.ViewHolder {
-        private CircleImageView mImageUserAvatar;
-        private TextView mTextViewTitle;
-        private TextView mTextViewTime;
-        private TextView mTextViewContent;
-
-        private FeedsViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.item_feeds_list, parent, false));
-            mImageUserAvatar = itemView.findViewById(R.id.image_avatar_feeds);
-            mTextViewTitle = itemView.findViewById(R.id.text_title_feeds);
-            mTextViewTime = itemView.findViewById(R.id.text_time_feeds);
-            mTextViewContent = itemView.findViewById(R.id.text_content_feeds);
-        }
-
-        private void bind(final Feed feed) {
-            mTextViewTitle.setText(feed.getSpannedTitle());
-            mTextViewTime.setText(feed.getTime());
-            if (feed.getContent() != null) {
-                mTextViewContent.setVisibility(View.VISIBLE);
-                mTextViewContent.setText(feed.getContent());
-            } else {
-                mTextViewContent.setVisibility(View.GONE);
-            }
-            Picasso.get().load(feed.getUserAvatarUrl()).into(mImageUserAvatar);
-
-            mImageUserAvatar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = ProfileActivity.newIntent(getActivity(), feed.getUserUrl());
-                    startActivity(intent);
-                }
-            });
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = RepoActivity.newIntent(getActivity(), feed.getRepoUrl());
-                    startActivity(intent);
-                }
-            });
-        }
-    }
-
     private void updateFeedsList() {
         String access_token = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
-                                    .getString(MySingleton.KEY_ACCESS_TOKEN, "");
+                .getString(MySingleton.KEY_ACCESS_TOKEN, "");
         String username = getContext().getSharedPreferences(MySingleton.PREF_LOGIN_INFO, Context.MODE_PRIVATE)
-                            .getString(MySingleton.KEY_USERNAME, "");
+                .getString(MySingleton.KEY_USERNAME, "");
         String url = "https://api.github.com/users/" + username + "/received_events?access_token=" + access_token;
         Log.d(TAG, url);
         Log.d(TAG, username);
@@ -174,7 +101,7 @@ public class FeedsFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         ArrayList<Feed> feedsList = processRawJson(response);
-                        
+
                         mFeedsAdapter.getFeedsList().clear();
                         mFeedsAdapter.getFeedsList().addAll(feedsList);
                         mFeedsAdapter.notifyDataSetChanged();
@@ -252,6 +179,78 @@ public class FeedsFragment extends Fragment {
         return feedsList;
     }
 
+    private class FeedsAdapter extends RecyclerView.Adapter<FeedsViewHolder> {
+        private ArrayList<Feed> mFeedsList;
+
+        private FeedsAdapter(ArrayList<Feed> feedsList) {
+            mFeedsList = feedsList;
+        }
+
+        public ArrayList<Feed> getFeedsList() {
+            return mFeedsList;
+        }
+
+        @NonNull
+        @Override
+        public FeedsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+            return new FeedsViewHolder(layoutInflater, parent);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull FeedsViewHolder holder, int position) {
+            holder.bind(mFeedsList.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return mFeedsList.size();
+        }
+    }
+
+    private class FeedsViewHolder extends RecyclerView.ViewHolder {
+        private CircleImageView mImageUserAvatar;
+        private TextView mTextViewTitle;
+        private TextView mTextViewTime;
+        private TextView mTextViewContent;
+
+        private FeedsViewHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater.inflate(R.layout.item_feeds_list, parent, false));
+            mImageUserAvatar = itemView.findViewById(R.id.image_avatar_feeds);
+            mTextViewTitle = itemView.findViewById(R.id.text_title_feeds);
+            mTextViewTime = itemView.findViewById(R.id.text_time_feeds);
+            mTextViewContent = itemView.findViewById(R.id.text_content_feeds);
+        }
+
+        private void bind(final Feed feed) {
+            mTextViewTitle.setText(feed.getSpannedTitle());
+            mTextViewTime.setText(feed.getTime());
+            if (feed.getContent() != null) {
+                mTextViewContent.setVisibility(View.VISIBLE);
+                mTextViewContent.setText(feed.getContent());
+            } else {
+                mTextViewContent.setVisibility(View.GONE);
+            }
+            Picasso.get().load(feed.getUserAvatarUrl()).into(mImageUserAvatar);
+
+            mImageUserAvatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = ProfileActivity.newIntent(getActivity(), feed.getUserUrl());
+                    startActivity(intent);
+                }
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = RepoActivity.newIntent(getActivity(), feed.getRepoUrl());
+                    startActivity(intent);
+                }
+            });
+        }
+    }
+
     private class Feed {
         private String mTitle;
         private Spanned mSpannedTitle;
@@ -288,6 +287,22 @@ public class FeedsFragment extends Fragment {
             return mTime;
         }
 
+        public void setTime(String time) {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+            try {
+                Date d = formatter.parse(time);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(d);
+                calendar.add(Calendar.HOUR, 7);
+
+                mTime = DateUtils.getRelativeTimeSpanString(calendar.getTime().getTime(), new Date().getTime(),
+                        DateUtils.MINUTE_IN_MILLIS,
+                        DateUtils.FORMAT_ABBREV_RELATIVE).toString();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
         public String getContent() {
             return mContent;
         }
@@ -298,22 +313,6 @@ public class FeedsFragment extends Fragment {
 
         public String getRepoUrl() {
             return mRepoUrl;
-        }
-
-        public void setTime(String time) {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
-            try {
-                Date d = formatter.parse(time);
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(d);
-                calendar.add(Calendar.HOUR, 7);
-
-                mTime = DateUtils.getRelativeTimeSpanString(calendar.getTime().getTime(), new Date().getTime(),
-                                                            DateUtils.MINUTE_IN_MILLIS,
-                                                            DateUtils.FORMAT_ABBREV_RELATIVE).toString();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
         }
     }
 }

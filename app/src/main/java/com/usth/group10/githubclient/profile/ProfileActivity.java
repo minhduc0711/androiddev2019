@@ -1,5 +1,14 @@
 package com.usth.group10.githubclient.profile;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+
+import com.google.android.material.tabs.TabLayout;
+import com.usth.group10.githubclient.R;
+import com.usth.group10.githubclient.others.NothingHereFragment;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -8,16 +17,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-
-import com.google.android.material.tabs.TabLayout;
-import com.usth.group10.githubclient.R;
-import com.usth.group10.githubclient.home.FeedsFragment;
-import com.usth.group10.githubclient.others.NothingHereFragment;
 
 public class ProfileActivity extends AppCompatActivity {
     private static final String KEY_USER_URL = "user_url";
@@ -65,42 +64,54 @@ public class ProfileActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void setPage(int page) {
+        mViewPager.setCurrentItem(page);
+    }
+
     private static class ProfileFragmentPagerAdapter extends FragmentPagerAdapter {
         private static String mUserUrl;
         private final int PAGE_COUNT = 7;
-        private String titles[] = new String[] { "Overview", "Feed", "Repositories","Starred",
-                "Gists","Followers","Following" };
+        private String titles[] = new String[]{"Overview", "Feed", "Repositories", "Starred",
+                "Gists", "Followers", "Following"};
+
         private ProfileFragmentPagerAdapter(FragmentManager fm, String userUrl) {
             super(fm);
             mUserUrl = userUrl;
         }
+
         @Override
         public int getCount() {
             return PAGE_COUNT;
         }
+
         // number of pages for a ViewPager
         @Override
         public Fragment getItem(int page) {
             // returns an instance of Fragment corresponding to the specified page
             switch (page) {
-                case 0: return OverviewProfileFragment.newInstance(mUserUrl);
-                case 1: return FeedProfileFragment.newInstance(mUserUrl);
-                case 2: return RepositoriesFragment.newInstance(mUserUrl);
-                case 3: return NothingHereFragment.newInstance(titles[page]);
-                case 4: return NothingHereFragment.newInstance(titles[page]);
-                case 5: return FollowerFragment.newInstance(mUserUrl);
-                case 6: return FollowingFragment.newInstance(mUserUrl);
-                default: return new Fragment();
+                case 0:
+                    return OverviewProfileFragment.newInstance(mUserUrl);
+                case 1:
+                    return FeedProfileFragment.newInstance(mUserUrl);
+                case 2:
+                    return RepositoriesFragment.newInstance(mUserUrl);
+                case 3:
+                    return NothingHereFragment.newInstance(titles[page]);
+                case 4:
+                    return NothingHereFragment.newInstance(titles[page]);
+                case 5:
+                    return FollowerFragment.newInstance(mUserUrl);
+                case 6:
+                    return FollowingFragment.newInstance(mUserUrl);
+                default:
+                    return new Fragment();
             }
         }
+
         @Override
         public CharSequence getPageTitle(int page) {
             // returns a tab title corresponding to the specified page
             return titles[page];
         }
-    }
-
-    public void setPage(int page) {
-        mViewPager.setCurrentItem(page);
     }
 }
